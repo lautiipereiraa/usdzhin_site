@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import logo from "@assets/logo.png"
 import { useState, useEffect } from "react";
-import { fetchQuotes } from "../store/quotesSlice";
+import { fetchQuotes } from "@store/quotesSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Hero = () => {
   const dispatch = useDispatch();
@@ -34,9 +35,9 @@ const Hero = () => {
   };
 
   return (
-    <div className="py-16 px-6 text-center">
-      <div className="flex items-center justify-center mb-4">
-        <h1 className="text-3xl font-light text-blue-800">USDZHIN</h1>
+    <div className="py-8 text-center">
+      <div className="flex items-center justify-center">
+        <img src={logo} alt="Logo de USDZHIN" className="h-30" />
       </div>
 
       <div className="flex items-center justify-center text-sm text-blue-600 mb-4">

@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <div className="text-center mt-12">
       <p className="text-sm text-blue-500">
-        Los precios son referenciales y pueden variar según el mercado
+        Datos obtenidos de DolarApi y ComparaDolar
       </p>
     </div>
   );
