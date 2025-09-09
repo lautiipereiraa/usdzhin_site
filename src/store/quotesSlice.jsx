@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchQuotes = createAsyncThunk("quotes/fetch", async () => {
   const response = await axios.get("https://api.comparadolar.ar/quotes");
@@ -11,8 +11,8 @@ const quotesSlice = createSlice({
   initialState: {
     data: null,
     loading: false,
-    bestBuy: null,   
-    bestSell: null, 
+    bestBuy: null,
+    bestSell: null,
     error: null,
   },
   reducers: {},
@@ -26,18 +26,16 @@ const quotesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
 
-        const activeValidAsks = action.payload.filter(
-          item => item.is24x7 && item.ask !== null
-        );
-        const activeValidBids = action.payload.filter(
-          item => item.is24x7 && item.bid !== null
-        );
+        const active24x7 = action.payload.filter(item => item.is24x7);
 
-        const bestBuy = activeValidAsks.reduce((prev, curr) =>
+        const validBids = active24x7.filter(item => item.bid !== null);
+        const validAsks = active24x7.filter(item => item.ask !== null);
+
+        const bestBuy = validAsks.reduce((prev, curr) =>
           curr.ask < (prev?.ask || Infinity) ? curr : prev
           , null);
 
-        const bestSell = activeValidBids.reduce((prev, curr) =>
+        const bestSell = validBids.reduce((prev, curr) =>
           curr.bid > (prev?.bid || 0) ? curr : prev
           , null);
 
