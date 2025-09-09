@@ -8,6 +8,7 @@ import { fetchDollars } from "@store/dolarSlice";
 import { fetchQuotes } from "@store/quotesSlice";
 import SkeletonCard from "@components/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
+import BestPricesCard from "@components/BestPricesCard";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,10 +29,17 @@ const App = () => {
     <Layout>
       <Hero />
       <section className="container mx-auto px-20">
+        {/* Select coin */}
         <SelectBox />
+        {/* Best price cards */}
+        <div className="mb-6">
+          <BestPricesCard />
+        </div>
+        {/* Skeleton loader */}
         {isLoading ? (
           <SkeletonCard />
         ) : (
+          // Cards dolares
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {dollars.map((item) => (
               <Card

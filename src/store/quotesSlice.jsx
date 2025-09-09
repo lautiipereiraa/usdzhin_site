@@ -11,6 +11,8 @@ const quotesSlice = createSlice({
   initialState: {
     data: null,
     loading: false,
+    bestBuy: null,   
+    bestSell: null, 
     error: null,
   },
   reducers: {},
@@ -23,6 +25,24 @@ const quotesSlice = createSlice({
       .addCase(fetchQuotes.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
+
+        const activeValidAsks = action.payload.filter(
+          item => item.is24x7 && item.ask !== null
+        );
+        const activeValidBids = action.payload.filter(
+          item => item.is24x7 && item.bid !== null
+        );
+
+        const bestBuy = activeValidAsks.reduce((prev, curr) =>
+          curr.ask < (prev?.ask || Infinity) ? curr : prev
+          , null);
+
+        const bestSell = activeValidBids.reduce((prev, curr) =>
+          curr.bid > (prev?.bid || 0) ? curr : prev
+          , null);
+
+        state.bestBuy = bestBuy;
+        state.bestSell = bestSell;
       })
       .addCase(fetchQuotes.rejected, (state, action) => {
         state.loading = false;
