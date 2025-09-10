@@ -33,24 +33,31 @@ const App = () => {
         <SelectBox />
         {/* Best price cards */}
         <div className="mb-6">
-          <BestPricesCard />
+          <span className="w-full text-2xl text-blue-800">Mejores precios</span>
+
+          <div className="mt-6">
+            <BestPricesCard />
+          </div>
         </div>
         {/* Skeleton loader */}
         {isLoading ? (
           <SkeletonCard />
         ) : (
           // Cards dolares
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {dollars.map((item) => (
-              <Card
-                key={item.nombre}
-                title={item.nombre}
-                priceBuy={item.compra}
-                priceSell={item.venta}
-                variation={item.variacion || "0"}
-              />
-            ))}
-          </div>
+          <>
+            <span className="w-full text-2xl text-blue-800">Precio dolares</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              {dollars.map((item) => (
+                <Card
+                  key={item.nombre}
+                  title={item.nombre}
+                  priceBuy={item.compra}
+                  priceSell={item.venta}
+                  variation={item.variacion || "0"}
+                />
+              ))}
+            </div>
+          </>
         )}
       </section>
     </Layout >

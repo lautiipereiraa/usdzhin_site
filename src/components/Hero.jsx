@@ -48,7 +48,7 @@ const Hero = () => {
           onClick={handleUpdate}
           disabled={loading}
           className={`flex items-center px-3 py-1 rounded-full transition-colors duration-200 
-            ${loading ? "bg-blue-200 cursor-not-allowed" : "bg-blue-100 hover:bg-blue-200"}`}
+            ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-200 hover:bg-blue-300"}`}
         >
           {loading ? (
             <svg

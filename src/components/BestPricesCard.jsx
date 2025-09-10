@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import SkeletonBestPriceCard from "./SkeletonBestPriceCard";
 
-const DEFAULT_LOGO_URL = "https://via.placeholder.com/48?text=N/A";
+const default_img = "./src/assets/default_img.png";
 
 export default function BestPricesCard() {
     const { bestBuy, bestSell, loading } = useSelector((state) => state.prices);
@@ -14,13 +14,12 @@ export default function BestPricesCard() {
         );
     }
 
-
     const cards = [
         bestBuy && {
             title: `Mejor precio para comprar: ${bestBuy.prettyName}`,
             price: bestBuy.ask,
             type: "buy",
-            logoUrl: bestBuy.logoUrl || bestBuy.logo || DEFAULT_LOGO_URL,
+            logoUrl: bestBuy.logoUrl || bestBuy.logo || default_img,
             url: bestBuy.url || '#',
             pct_variation: bestBuy.pct_variation,
         },
@@ -28,7 +27,7 @@ export default function BestPricesCard() {
             title: `Mejor precio para vender: ${bestSell.prettyName}`,
             price: bestSell.bid,
             type: "sell",
-            logoUrl: bestSell.logoUrl || bestSell.logo || DEFAULT_LOGO_URL,
+            logoUrl: bestSell.logoUrl || bestSell.logo || default_img,
             url: bestSell.url || '#',
             pct_variation: bestSell.pct_variation,
         },
@@ -39,14 +38,14 @@ export default function BestPricesCard() {
     }
 
     return (
-        <div className="flex justify-around w-full gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full">
             {cards.map((card, idx) => (
                 <a
                     key={idx}
                     href={card.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-100 hover:shadow-xl transition-all duration-300"
+                    className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-xs border border-blue-100 hover:shadow-md duration-300 flex flex-col justify-between hover:scale-102 transition-transform"
                 >
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-blue-800">{card.title}</h3>
@@ -54,11 +53,16 @@ export default function BestPricesCard() {
                             src={card.logoUrl}
                             alt={card.title}
                             className="h-12 w-12 rounded-full object-cover"
-                            onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_LOGO_URL; }}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = default_img;
+                            }}
                         />
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="text-sm text-blue-600">{card.type === "buy" ? "Compra" : "Venta"}</span>
+                        <span className="text-sm text-blue-600">
+                            {card.type === "buy" ? "Compra" : "Venta"}
+                        </span>
                         <span className="text-xl font-semibold text-blue-800 flex items-center gap-1">
                             $ {card.price}
                             {card.pct_variation > 0 && (
@@ -70,7 +74,11 @@ export default function BestPricesCard() {
                                     stroke="currentColor"
                                     strokeWidth={2}
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M5 15l7-7 7 7"
+                                    />
                                 </svg>
                             )}
                             {card.pct_variation < 0 && (
@@ -82,7 +90,11 @@ export default function BestPricesCard() {
                                     stroke="currentColor"
                                     strokeWidth={2}
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 9l-7 7-7-7"
+                                    />
                                 </svg>
                             )}
                         </span>
@@ -91,4 +103,5 @@ export default function BestPricesCard() {
             ))}
         </div>
     );
+
 }
