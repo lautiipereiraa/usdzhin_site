@@ -26,10 +26,8 @@ const quotesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
 
-        const active24x7 = action.payload.filter(item => item.is24x7);
-
-        const validBids = active24x7.filter(item => item.bid !== null);
-        const validAsks = active24x7.filter(item => item.ask !== null);
+        const validBids = action.payload.filter(item => item.bid !== null);
+        const validAsks = action.payload.filter(item => item.ask !== null);
 
         const bestBuy = validAsks.reduce((prev, curr) =>
           curr.ask < (prev?.ask || Infinity) ? curr : prev
