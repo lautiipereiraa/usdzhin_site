@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import Hero from "@components/Hero";
 import Card from "@components/Card";
 import Layout from "@components/Layout";
+import Divisor from "@components/Divisor";
 import InfoCard from "@components/InfoCard";
 import { fetchUSDC } from "@store/usdcSlice";
 import SelectBox from "@components/SelectBox";
 import { fetchDollars } from "@store/dolarSlice";
 import { fetchQuotes } from "@store/quotesSlice";
 import DivisorAlert from "@components/DivisorAlert";
+import TelegramCard from "@components/TelegramCard";
 import SkeletonCard from "@components/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
 import BestPricesCard from "@components/BestPricesCard";
@@ -47,6 +49,9 @@ const App = () => {
         <SelectBox />
         {/* Best price cards */}
         <div className="mb-6">
+          <section className="mt-6 mb-6">
+            <Divisor />
+          </section>
           <span className="w-full text-2xl text-blue-800">Mejores precios</span>
 
           <div className="mt-6">
@@ -59,6 +64,9 @@ const App = () => {
         ) : (
           // Cards dolares
           <>
+            <section className="mt-6 mb-6">
+              <Divisor />
+            </section>
             <div className="flex items-center justify-between">
               <span className="w-full text-2xl text-blue-800">Precio dolares</span>
               <div className="flex justify-end items-center w-full gap-2">
@@ -83,6 +91,14 @@ const App = () => {
 
             <section className="mt-6">
               <InfoCard />
+            </section>
+
+            <section className="mt-6">
+              <Divisor />
+            </section>
+
+            <section className="mt-6">
+              <TelegramCard />
             </section>
           </>
         )}
