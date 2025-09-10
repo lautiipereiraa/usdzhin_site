@@ -1,28 +1,42 @@
 import { useSelector } from "react-redux";
+import SkeletonBestPriceCard from "./SkeletonBestPriceCard";
+
+const DEFAULT_LOGO_URL = "https://via.placeholder.com/48?text=N/A";
 
 export default function BestPricesCard() {
-    const { bestBuy, bestSell, loading } = useSelector(state => state.quotes);
+    const { bestBuy, bestSell, loading } = useSelector((state) => state.prices);
 
-    if (loading) return <div>Cargando...</div>;
+    if (loading) {
+        return (
+            <div className="flex justify-around w-full gap-6">
+                <SkeletonBestPriceCard />
+            </div>
+        );
+    }
+
 
     const cards = [
         bestBuy && {
             title: `Mejor precio para comprar: ${bestBuy.prettyName}`,
             price: bestBuy.ask,
             type: "buy",
-            logoUrl: bestBuy.logoUrl,
-            url: bestBuy.url,
+            logoUrl: bestBuy.logoUrl || bestBuy.logo || DEFAULT_LOGO_URL,
+            url: bestBuy.url || '#',
             pct_variation: bestBuy.pct_variation,
         },
         bestSell && {
             title: `Mejor precio para vender: ${bestSell.prettyName}`,
             price: bestSell.bid,
             type: "sell",
-            logoUrl: bestSell.logoUrl,
-            url: bestSell.url,
+            logoUrl: bestSell.logoUrl || bestSell.logo || DEFAULT_LOGO_URL,
+            url: bestSell.url || '#',
             pct_variation: bestSell.pct_variation,
         },
     ].filter(Boolean);
+
+    if (cards.length === 0) {
+        return <div className="text-center text-blue-800 text-lg">No hay datos de precios disponibles.</div>;
+    }
 
     return (
         <div className="flex justify-around w-full gap-6">
@@ -40,6 +54,7 @@ export default function BestPricesCard() {
                             src={card.logoUrl}
                             alt={card.title}
                             className="h-12 w-12 rounded-full object-cover"
+                            onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_LOGO_URL; }}
                         />
                     </div>
                     <div className="flex justify-between items-center">
