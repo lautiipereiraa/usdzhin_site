@@ -1,11 +1,13 @@
 import logo from "@assets/logo.png"
 import { useState, useEffect } from "react";
-import { fetchQuotes } from "@store/quotesSlice";
+import { fetchPrices } from "@store/pricesSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Hero = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.quotes);
+
+  const { loading, error, selectedCurrency } = useSelector((state) => state.prices);
+
   const [lastUpdate, setLastUpdate] = useState("");
 
   const getCurrentTime = () => {
@@ -13,24 +15,12 @@ const Hero = () => {
     return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  useEffect(() => {
-    const fetchInitial = async () => {
-      try {
-        await dispatch(fetchQuotes()).unwrap();
-        setLastUpdate(getCurrentTime());
-      } catch (err) {
-        console.error("Error al cargar quotes iniciales:", err);
-      }
-    };
-    fetchInitial();
-  }, [dispatch]);
-
   const handleUpdate = async () => {
     try {
-      await dispatch(fetchQuotes()).unwrap();
+      await dispatch(fetchPrices(selectedCurrency.name)).unwrap();
       setLastUpdate(getCurrentTime());
     } catch (err) {
-      console.error("Error al actualizar quotes:", err);
+      console.error("Error al actualizar precios:", err);
     }
   };
 
@@ -47,8 +37,7 @@ const Hero = () => {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className={`flex items-center px-3 py-1 rounded-full transition-colors duration-200 
-            ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-200 hover:bg-blue-300"}`}
+          className={`flex items-center px-3 py-1 rounded-full transition-colors duration-200 ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-200 hover:bg-blue-300"}`}
         >
           {loading ? (
             <svg
