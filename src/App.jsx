@@ -7,6 +7,7 @@ import { fetchUSDC } from "@store/usdcSlice";
 import SelectBox from "@components/SelectBox";
 import { fetchDollars } from "@store/dolarSlice";
 import { fetchQuotes } from "@store/quotesSlice";
+import DivisorAlert from "@components/DivisorAlert";
 import SkeletonCard from "@components/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
 import BestPricesCard from "@components/BestPricesCard";
@@ -76,6 +77,9 @@ const App = () => {
                 />
               ))}
             </div>
+            <section className="mt-6">
+              <DivisorAlert />
+            </section>
 
             <section className="mt-6">
               <InfoCard />
