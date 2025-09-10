@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Hero from "@components/Hero";
 import Card from "@components/Card";
 import Layout from "@components/Layout";
+import InfoCard from "@components/InfoCard";
 import { fetchUSDC } from "@store/usdcSlice";
 import SelectBox from "@components/SelectBox";
 import { fetchDollars } from "@store/dolarSlice";
@@ -25,6 +26,18 @@ const App = () => {
 
   const isLoading = loadingDollars || loadingUSDC;
 
+  const fechaActualizacion = dollars && dollars.length > 0
+    ? new Date(dollars[0].fechaActualizacion).toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    : '';
+
+  const filteredDollars = dollars ? dollars.filter(item => item.casa !== "mayorista") : [];
+
   return (
     <Layout>
       <Hero />
@@ -45,9 +58,15 @@ const App = () => {
         ) : (
           // Cards dolares
           <>
-            <span className="w-full text-2xl text-blue-800">Precio dolares</span>
+            <div className="flex items-center justify-between">
+              <span className="w-full text-2xl text-blue-800">Precio dolares</span>
+              <div className="flex justify-end items-center w-full gap-2">
+                <span className="text-sm text-blue-600">(Última actualización: </span>
+                <span className="text-sm text-blue-600">{fechaActualizacion || ""})</span>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {dollars.map((item) => (
+              {filteredDollars.map((item) => (
                 <Card
                   key={item.nombre}
                   title={item.nombre}
@@ -57,6 +76,10 @@ const App = () => {
                 />
               ))}
             </div>
+
+            <section className="mt-6">
+              <InfoCard />
+            </section>
           </>
         )}
       </section>
