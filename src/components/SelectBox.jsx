@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ArrowDownBlueIcon from "@icons/ArrowDownBlueIcon";
 import { fetchPrices, setSelectedCurrency } from "@store/pricesSlice";
 
 const SelectBox = () => {
@@ -11,7 +12,7 @@ const SelectBox = () => {
 
     const options = [
         { icon: "$", label: "US Dolar (USD)", name: "usd" },
-        { icon: "◎", label: "USD Coin (USDC)", name: "usdc" }, 
+        { icon: "◎", label: "USD Coin (USDC)", name: "usdc" },
         { icon: "◈", label: "Tether (USDT)", name: "usdt" },
         { icon: "₿", label: "Bitcoin (BTC)", name: "btc" },
         { icon: "Ξ", label: "Ethereum (ETH)", name: "eth" },
@@ -39,18 +40,7 @@ const SelectBox = () => {
             >
                 <span className="mr-2 text-base">{selected.icon}</span>
                 <span className="mr-2">{selected.label}</span>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`w-4 h-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                >
-                    <path d="m6 9 6 6 6-6" />
-                </svg>
+                <ArrowDownBlueIcon />
             </button>
             {open && (
                 <div className="absolute top-full left-0 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-h-40 custom-scroll">

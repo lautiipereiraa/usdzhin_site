@@ -1,4 +1,6 @@
 import { useSelector } from "react-redux";
+import ArrowUpIcon from "@icons/ArrowUpIcon";
+import ArrowDownIcon from "@icons/ArrowDownIcon";
 import SkeletonBestPriceCard from "./SkeletonBestPriceCard";
 
 const default_img = "./src/assets/default_img.png";
@@ -66,36 +68,10 @@ export default function BestPricesCard() {
                         <span className="text-xl font-semibold text-blue-800 flex items-center gap-1">
                             $ {card.price}
                             {card.pct_variation > 0 && (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-4 h-4 text-emerald-600"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M5 15l7-7 7 7"
-                                    />
-                                </svg>
+                                <ArrowUpIcon />
                             )}
                             {card.pct_variation < 0 && (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-4 h-4 text-red-600"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
+                                <ArrowDownIcon />
                             )}
                         </span>
                     </div>
