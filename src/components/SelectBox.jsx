@@ -36,14 +36,15 @@ const SelectBox = () => {
         <div className="flex justify-center mb-6 relative" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
-                className="flex justify-center items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-blue-200 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-blue-800 font-medium min-w-40 cursor-pointer"
+                className="flex justify-center items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-blue-200 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-blue-800 font-medium min-w-[160px] cursor-pointer"
             >
                 <span className="mr-2 text-base">{selected.icon}</span>
-                <span className="mr-2">{selected.label}</span>
+                <span className="mr-2 truncate">{selected.label}</span>
                 <ArrowDownBlueIcon />
             </button>
+
             {open && (
-                <div className="absolute top-full left-137 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-h-40 max-w-65 custom-scroll">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-w-sm mx-auto sm:max-w-[16rem] max-h-56 custom-scroll">
                     {options.map((opt, i) => (
                         <button
                             key={i}
@@ -51,7 +52,8 @@ const SelectBox = () => {
                                 dispatch(setSelectedCurrency(opt));
                                 setOpen(false);
                             }}
-                            className={`w-full px-4 py-2 text-left hover:bg-blue-50 transition-colors duration-200 flex items-center ${opt.label === selected.label ? "bg-blue-100 text-blue-700" : "text-blue-800"}`}
+                            className={`w-full px-4 py-2 text-left hover:bg-blue-50 transition-colors duration-200 flex items-center ${opt.label === selected.label ? "bg-blue-100 text-blue-700" : "text-blue-800"
+                                }`}
                         >
                             <span className="mr-2 text-base">{opt.icon}</span>
                             <span className="truncate">{opt.label}</span>
@@ -59,6 +61,7 @@ const SelectBox = () => {
                     ))}
                 </div>
             )}
+
         </div>
     );
 };
