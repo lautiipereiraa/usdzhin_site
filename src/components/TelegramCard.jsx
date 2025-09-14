@@ -1,4 +1,5 @@
 import BellIcon from "@icons/BellIcon";
+import ShowCodeIcon from "@icons/ShowCodeIcon";
 import ArrowTelegram from "@icons/ArrowTelegram";
 
 const TelegramCard = () => {
@@ -9,26 +10,39 @@ const TelegramCard = () => {
                     <BellIcon />
                 </div>
                 <div className="flex-1">
-                    <h3 className="font-semibold text-blue-800 text-lg mb-2">
-                        Recibí los mejores precios diariamente (notificación diaria)
-                    </h3>
-                    <span></span>
+                    <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-blue-800 text-lg">
+                            Notificaciones de Telegram
+                        </h3>
+                        <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium">
+                            En desarrollo
+                        </span>
+                    </div>
+
                     <p className="text-blue-800 text-sm mb-4">
-                        Vinculá tu Telegram y recibí notificaciones con los mejores precios del dólar.
+                        Bot de Telegram para recibir notificaciones diarias con los mejores precios del dólar.
+                        Actualmente en fase de desarrollo.
                     </p>
 
-                    <a
-                        href="https://t.me/usdzhinbot"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <button
-                            className="bg-blue-800 text-white px-6 py-2 rounded-xl hover:bg-blue-900 transition-colors font-medium text-sm flex items-center gap-2 cursor-pointer"
+                    <div className="flex gap-3">
+                        <a
+                            href="https://github.com/lautiipereiraa/usdzhinbot"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition-colors font-medium text-sm flex items-center gap-2"
                         >
-                           <ArrowTelegram />
-                            Vincular Telegram
+                            <ShowCodeIcon />
+                            Ver código
+                        </a>
+
+                        <button
+                            disabled
+                            className="bg-blue-300 text-blue-600 px-4 py-2 rounded-xl font-medium text-sm flex items-center gap-2 cursor-not-allowed opacity-60"
+                        >
+                            <ArrowTelegram />
+                            Próximamente
                         </button>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
