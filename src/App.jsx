@@ -10,9 +10,9 @@ import { fetchDollars } from "@store/dolarSlice";
 import { fetchQuotes } from "@store/quotesSlice";
 import DivisorAlert from "@components/DivisorAlert";
 import TelegramAlert from "@components/TelegramAlert";
-import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import BestPricesCard from "@components/BestPricesCard";
+import { motion, AnimatePresence } from "framer-motion";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,12 +32,12 @@ const App = () => {
   const fechaActualizacion =
     dollars && dollars.length > 0
       ? new Date(dollars[0].fechaActualizacion).toLocaleString("es-AR", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
       : "";
 
   const filteredDollars = dollars
@@ -48,6 +48,7 @@ const App = () => {
     <Layout>
       <AnimatePresence>
         <motion.div
+          key="hero"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -57,6 +58,7 @@ const App = () => {
 
         <section className="container mx-auto px-20">
           <motion.div
+            key="selectbox"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -65,6 +67,7 @@ const App = () => {
           </motion.div>
 
           <motion.div
+            key="best-prices"
             className="mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -82,6 +85,7 @@ const App = () => {
 
           {!isLoading && (
             <motion.div
+              key="dollars-section"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -99,7 +103,7 @@ const App = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {filteredDollars.map((item, index) => (
                   <motion.div
-                    key={item.nombre}
+                    key={`${item.nombre}-${index}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -134,6 +138,7 @@ const App = () => {
 
           {isLoading && (
             <motion.div
+              key="loading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="h-64 flex items-center justify-center"
