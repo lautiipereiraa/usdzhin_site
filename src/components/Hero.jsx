@@ -10,7 +10,7 @@ const cooldown_sec = 30;
 const Hero = () => {
   const dispatch = useDispatch();
 
-  const { loading, error, selectedCurrency } = useSelector((state) => state.prices);
+  const { loading, selectedCurrency } = useSelector((state) => state.prices);
 
   const [lastUpdate, setLastUpdate] = useState("");
   const [cooldown, setCooldown] = useState(0);
@@ -74,12 +74,6 @@ const Hero = () => {
           Actualizar {cooldown > 0 && `(${cooldown}s)`}
         </button>
       </div>
-      
-      {error && (
-        <p className="text-red-500 text-sm">
-          Error al actualizar quotes. Se mantiene la última hora correcta.
-        </p>
-      )}
     </div>
   );
 };

@@ -1,3 +1,6 @@
+import ArrowUpIcon from "@icons/ArrowUpIcon"
+import ArrowDownIcon from "@icons/ArrowDownIcon"
+
 const Card = ({ title, priceBuy, priceSell }) => {
   return (
     <>
@@ -9,14 +12,20 @@ const Card = ({ title, priceBuy, priceSell }) => {
         <div className="space-y-3">
           {priceBuy !== undefined && (
             <div className="flex justify-between items-center">
-              <span className="text-sm text-blue-600">Compra</span>
+              <div className="flex items-center space-x-1">
+                <span className="text-sm text-blue-600">Compra</span>
+                <ArrowDownIcon />
+              </div>
               <span className="text-xl font-semibold text-blue-800">$ {priceBuy}</span>
             </div>
           )}
 
           {priceSell !== undefined && (
             <div className="flex justify-between items-center">
-              <span className="text-sm text-blue-600">Venta</span>
+              <div className="flex items-center space-x-1">
+                <span className="text-sm text-blue-600">Venta</span>
+                <ArrowUpIcon />
+              </div>
               <span className="text-xl font-semibold text-blue-800">$ {priceSell}</span>
             </div>
           )}
