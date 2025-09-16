@@ -43,7 +43,7 @@ const SelectBox = () => {
                 <ArrowDownBlueIcon />
             </button>
             {open && (
-                <div className="absolute top-full left-0 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-h-40 custom-scroll">
+                <div className="absolute top-full left-137 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-h-40 max-w-65 custom-scroll">
                     {options.map((opt, i) => (
                         <button
                             key={i}
