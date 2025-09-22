@@ -5,6 +5,13 @@ import SkeletonBestPriceCard from "./SkeletonBestPriceCard";
 
 const default_img = "./src/assets/default_img.png";
 
+const currencyFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+});
+
 export default function BestPricesCard() {
     const { bestBuy, bestSell, loading } = useSelector((state) => state.prices);
 
@@ -66,7 +73,7 @@ export default function BestPricesCard() {
                             {card.type === "buy" ? "Compra" : "Venta"}
                         </span>
                         <span className="text-xl font-semibold text-blue-800 flex items-center gap-1">
-                            $ {card.price}
+                            {currencyFormatter.format(card.price)}
                             {card.pct_variation > 0 && (
                                 <ArrowUpIcon />
                             )}
@@ -79,5 +86,4 @@ export default function BestPricesCard() {
             ))}
         </div>
     );
-
 }
