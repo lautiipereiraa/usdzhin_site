@@ -26,18 +26,18 @@ export default function BestPricesCard() {
     const cards = [
         bestBuy && {
             title: `Mejor precio para comprar: ${bestBuy.prettyName}`,
-            price: bestBuy.ask,
+            price: bestBuy.bid,
             type: "buy",
             logoUrl: bestBuy.logoUrl || bestBuy.logo || default_img,
-            url: bestBuy.url || '#',
+            url: bestBuy.url || "#",
             pct_variation: bestBuy.pct_variation,
         },
         bestSell && {
             title: `Mejor precio para vender: ${bestSell.prettyName}`,
-            price: bestSell.bid,
+            price: bestSell.ask,
             type: "sell",
             logoUrl: bestSell.logoUrl || bestSell.logo || default_img,
-            url: bestSell.url || '#',
+            url: bestSell.url || "#",
             pct_variation: bestSell.pct_variation,
         },
     ].filter(Boolean);
@@ -74,12 +74,8 @@ export default function BestPricesCard() {
                         </span>
                         <span className="text-xl font-semibold text-blue-800 flex items-center gap-1">
                             {currencyFormatter.format(card.price)}
-                            {card.pct_variation > 0 && (
-                                <ArrowUpIcon />
-                            )}
-                            {card.pct_variation < 0 && (
-                                <ArrowDownIcon />
-                            )}
+                            {card.pct_variation > 0 && <ArrowUpIcon />}
+                            {card.pct_variation < 0 && <ArrowDownIcon />}
                         </span>
                     </div>
                 </a>

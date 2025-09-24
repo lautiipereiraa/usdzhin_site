@@ -11,7 +11,7 @@ const quotesSlice = createSlice({
   initialState: {
     data: null,
     loading: false,
-    bestBuy: null,
+    bestBuy: null,  
     bestSell: null,
     error: null,
   },
@@ -26,16 +26,19 @@ const quotesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
 
-        const validBids = action.payload.filter(item => item.bid !== null);
-        const validAsks = action.payload.filter(item => item.ask !== null);
+        console.log("Quotes API:", action.payload);
 
-        const bestBuy = validAsks.reduce((prev, curr) =>
-          curr.ask < (prev?.ask || Infinity) ? curr : prev
-          , null);
+        const bestBuy = action.payload.reduce(
+          (prev, curr) =>
+            curr.bid != null && curr.bid < (prev?.bid ?? Infinity) ? curr : prev,
+          null
+        );
 
-        const bestSell = validBids.reduce((prev, curr) =>
-          curr.bid > (prev?.bid || 0) ? curr : prev
-          , null);
+        const bestSell = action.payload.reduce(
+          (prev, curr) =>
+            curr.ask != null && curr.ask > (prev?.ask ?? 0) ? curr : prev,
+          null
+        );
 
         state.bestBuy = bestBuy;
         state.bestSell = bestSell;
