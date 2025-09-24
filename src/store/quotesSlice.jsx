@@ -30,13 +30,13 @@ const quotesSlice = createSlice({
 
         const bestBuy = action.payload.reduce(
           (prev, curr) =>
-            curr.bid != null && curr.bid < (prev?.bid ?? Infinity) ? curr : prev,
+            curr.ask != null && curr.ask < (prev?.ask ?? Infinity) ? curr : prev,
           null
         );
 
         const bestSell = action.payload.reduce(
           (prev, curr) =>
-            curr.ask != null && curr.ask > (prev?.ask ?? 0) ? curr : prev,
+            curr.bid != null && curr.bid > (prev?.bid ?? 0) ? curr : prev,
           null
         );
 

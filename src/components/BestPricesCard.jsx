@@ -26,7 +26,7 @@ export default function BestPricesCard() {
     const cards = [
         bestBuy && {
             title: `Mejor precio para comprar: ${bestBuy.prettyName}`,
-            price: bestBuy.bid,
+            price: bestBuy.ask,
             type: "buy",
             logoUrl: bestBuy.logoUrl || bestBuy.logo || default_img,
             url: bestBuy.url || "#",
@@ -34,7 +34,7 @@ export default function BestPricesCard() {
         },
         bestSell && {
             title: `Mejor precio para vender: ${bestSell.prettyName}`,
-            price: bestSell.ask,
+            price: bestSell.bid,
             type: "sell",
             logoUrl: bestSell.logoUrl || bestSell.logo || default_img,
             url: bestSell.url || "#",
