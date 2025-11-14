@@ -2,7 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchPrices = createAsyncThunk("prices/fetch", async (currencyName = "usd") => {
-  const endpoint = currencyName === "usd" ? "https://api.comparadolar.ar/quotes" : `https://api.comparadolar.ar/crypto/${currencyName}`;
+  const endpoint = currencyName === "usd" ? "https://api.comparadolar.ar/usd" : `https://api.comparadolar.ar/crypto/${currencyName}`;
   const response = await axios.get(endpoint);
   return response.data;
 });

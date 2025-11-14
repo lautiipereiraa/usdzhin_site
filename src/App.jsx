@@ -7,7 +7,6 @@ import InfoCard from "@components/InfoCard";
 import { fetchUSDC } from "@store/usdcSlice";
 import SelectBox from "@components/SelectBox";
 import { fetchDollars } from "@store/dolarSlice";
-import { fetchQuotes } from "@store/quotesSlice";
 import DivisorAlert from "@components/DivisorAlert";
 import TelegramAlert from "@components/TelegramAlert";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +23,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchDollars());
     dispatch(fetchUSDC());
-    dispatch(fetchQuotes());
   }, [dispatch]);
 
   const isLoading = loadingDollars || loadingUSDC;
