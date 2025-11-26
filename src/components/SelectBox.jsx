@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDownBlueIcon from "@icons/ArrowDownBlueIcon";
 import { fetchPrices, setSelectedCurrency } from "@store/pricesSlice";
+import { useTheme } from "../context/ThemeContext";
 
 const SelectBox = () => {
     const [open, setOpen] = useState(false);
@@ -9,6 +10,7 @@ const SelectBox = () => {
 
     const dispatch = useDispatch();
     const selected = useSelector((state) => state.prices.selectedCurrency);
+    const { theme } = useTheme();
 
     const options = [
         { icon: "$", label: "US Dolar (USD)", name: "usd" },
@@ -36,15 +38,15 @@ const SelectBox = () => {
         <div className="flex justify-center mb-6 relative" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
-                className="flex justify-center items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-blue-200 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-blue-800 font-medium min-w-[160px] cursor-pointer"
+                className={`flex justify-center items-center px-4 py-2 ${theme === 'light' ? 'bg-white/80' : 'bg-[color:var(--card-bg)]'} backdrop-blur-sm border border-[color:var(--border-color)] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium min-w-[160px] cursor-pointer`}
             >
-                <span className="mr-2 text-base">{selected.icon}</span>
-                <span className="mr-2 truncate">{selected.label}</span>
+                <span className={`mr-2 text-base ${theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]'}`}>{selected.icon}</span>
+                <span className={`mr-2 truncate ${theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]'}`}>{selected.label}</span>
                 <ArrowDownBlueIcon />
             </button>
 
             {open && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg z-10 overflow-y-auto w-full max-w-sm mx-auto sm:max-w-[16rem] max-h-56 custom-scroll">
+                <div className={`absolute top-full left-0 right-0 mt-2 ${theme === 'light' ? 'bg-white/90' : 'bg-[color:var(--card-bg)]'} backdrop-blur-sm border border-[color:var(--border-color)] rounded-xl shadow-lg z-10 overflow-y-auto w-72 mx-auto max-h-56 custom-scroll`}>
                     {options.map((opt, i) => (
                         <button
                             key={i}
@@ -52,11 +54,13 @@ const SelectBox = () => {
                                 dispatch(setSelectedCurrency(opt));
                                 setOpen(false);
                             }}
-                            className={`w-full px-4 py-2 text-left hover:bg-blue-50 transition-colors duration-200 flex items-center ${opt.label === selected.label ? "bg-blue-100 text-blue-700" : "text-blue-800"
+                            className={`w-full px-4 py-2 text-left hover:bg-[color:var(--hero-update-bg)] transition-colors duration-200 flex items-center ${opt.label === selected.label
+                                    ? (theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-[color:var(--hero-update-bg)] text-[color:var(--text-blue-600)]')
+                                    : (theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]')
                                 }`}
                         >
-                            <span className="mr-2 text-base">{opt.icon}</span>
-                            <span className="truncate">{opt.label}</span>
+                            <span className={`mr-2 text-base ${theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]'}`}>{opt.icon}</span>
+                            <span className={`truncate ${theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]'}`}>{opt.label}</span>
                         </button>
                     ))}
                 </div>

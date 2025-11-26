@@ -45,16 +45,16 @@ const App = () => {
   return (
     <Layout>
       <AnimatePresence>
-        <motion.div
-          key="hero"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Hero />
-        </motion.div>
+        <section className="container mx-auto px-4 sm:px-6 lg:px-20">
+          <motion.div
+            key="hero"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Hero />
+          </motion.div>
 
-        <section className="container mx-auto px-20">
           <motion.div
             key="selectbox"
             initial={{ opacity: 0, y: 20 }}
@@ -74,7 +74,7 @@ const App = () => {
             <section className="mt-6 mb-6">
               <Divisor />
             </section>
-            <span className="w-full text-2xl text-blue-800">Mejores precios</span>
+            <span className="w-full text-2xl text-[color:var(--text-blue-800)]">Mejores precios</span>
 
             <div className="mt-6">
               <BestPricesCard />
@@ -92,10 +92,10 @@ const App = () => {
                 <Divisor />
               </section>
               <div className="flex items-center justify-between">
-                <span className="w-full text-2xl text-blue-800">Precio dolares</span>
+                <span className="w-full text-2xl text-[color:var(--text-blue-800)]">Precio dolares</span>
                 <div className="flex justify-end items-center w-full gap-2">
-                  <span className="text-sm text-blue-600">(Última actualización: </span>
-                  <span className="text-sm text-blue-600">{fechaActualizacion || ""})</span>
+                  <span className="text-sm text-[color:var(--text-blue-600)]">(Última actualización: </span>
+                  <span className="text-sm text-[color:var(--text-blue-600)]">{fechaActualizacion || ""})</span>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
@@ -141,7 +141,7 @@ const App = () => {
               animate={{ opacity: 1 }}
               className="h-64 flex items-center justify-center"
             >
-              <span className="text-blue-600">Cargando...</span>
+              <span className="text-[color:var(--text-blue-600)]">Cargando...</span>
             </motion.div>
           )}
         </section>

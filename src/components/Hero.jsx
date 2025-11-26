@@ -1,4 +1,6 @@
-import logo from "@assets/logo.png"
+import logo from "@assets/logo.png";
+import logoDarkMode from "../assets/icon_dark_mode.png";
+import { useTheme } from "../context/ThemeContext";
 import { useState, useEffect } from "react";
 import { fetchPrices } from "@store/pricesSlice";
 import CircleLoading from "@icons/CircleLoading";
@@ -9,6 +11,7 @@ const cooldown_sec = 30;
 
 const Hero = () => {
   const dispatch = useDispatch();
+  const { theme } = useTheme();
 
   const { loading, selectedCurrency } = useSelector((state) => state.prices);
 
@@ -51,12 +54,12 @@ const Hero = () => {
   const isButtonDisabled = loading || cooldown > 0;
 
   return (
-    <div className="py-8 text-center">
+    <div className="py-8 text-center relative">
       <div className="flex items-center justify-center">
-        <img src={logo} alt="Logo de USDZHIN" className="h-30" />
+        <img src={theme === 'light' ? logo : logoDarkMode} alt="Logo de USDZHIN" className="h-24 sm:h-28 md:h-32" />
       </div>
 
-      <div className="flex items-center justify-center text-sm text-blue-600 mb-4">
+      <div className="flex items-center justify-center text-sm text-blue-600 dark:text-[color:var(--text-blue-600)] mb-4 mt-0">
         <span className="mr-4">
           Última actualización: {lastUpdate || "—:—"}
         </span>
@@ -64,7 +67,7 @@ const Hero = () => {
           onClick={handleUpdate}
           disabled={isButtonDisabled}
           className={`flex items-center px-3 py-1 rounded-full transition-colors duration-200 
-            ${isButtonDisabled ? "bg-blue-300 cursor-not-allowed" : "bg-blue-200 hover:bg-blue-300"}`}
+            ${isButtonDisabled ? 'bg-blue-300 dark:bg-gray-700 cursor-not-allowed' : 'bg-blue-200 hover:bg-blue-300 dark:bg-[color:var(--hero-update-bg)] dark:hover:bg-[color:var(--hero-update-hover-bg)] active:bg-[color:var(--text-blue-600)]'}`}
         >
           {loading ? (
             <CircleIsLoading />

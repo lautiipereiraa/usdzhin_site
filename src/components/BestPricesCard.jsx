@@ -43,7 +43,7 @@ export default function BestPricesCard() {
     ].filter(Boolean);
 
     if (cards.length === 0) {
-        return <div className="text-center text-blue-800 text-lg">No hay datos de precios disponibles.</div>;
+        return <div className="text-center text-[color:var(--text-blue-800)] text-lg">No hay datos de precios disponibles.</div>;
     }
 
     return (
@@ -54,10 +54,10 @@ export default function BestPricesCard() {
                     href={card.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-xs border border-blue-100 hover:shadow-md duration-300 flex flex-col justify-between hover:scale-102 transition-transform"
+                    className="bg-[color:var(--card-bg)] backdrop-blur-sm rounded-2xl p-6 shadow-xs border border-[color:var(--border-color)] hover:shadow-md duration-300 flex flex-col justify-between hover:scale-102 transition-transform"
                 >
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-medium text-blue-800">{card.title}</h3>
+                        <h3 className="text-lg font-medium text-[color:var(--text-blue-800)]">{card.title}</h3>
                         <img
                             src={card.logoUrl}
                             alt={card.title}
@@ -69,10 +69,10 @@ export default function BestPricesCard() {
                         />
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="text-sm text-blue-600">
+                        <span className="text-sm text-[color:var(--text-blue-600)]">
                             {card.type === "buy" ? "Compra" : "Venta"}
                         </span>
-                        <span className="text-xl font-semibold text-blue-800 flex items-center gap-1">
+                        <span className="text-xl font-semibold text-[color:var(--text-blue-800)] flex items-center gap-1">
                             {currencyFormatter.format(card.price)}
                             {card.pct_variation > 0 && <ArrowUpIcon />}
                             {card.pct_variation < 0 && <ArrowDownIcon />}
