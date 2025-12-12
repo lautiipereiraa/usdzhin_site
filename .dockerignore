@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Readme
+README.md
