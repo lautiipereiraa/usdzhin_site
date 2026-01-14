@@ -14,6 +14,7 @@ const pricesSlice = createSlice({
     loading: false,
     bestBuy: null,
     bestSell: null,
+    bestSpread: null,
     selectedCurrency: { icon: "$", label: "US Dolar (USD)", name: "usd" },
     error: null,
   },
@@ -46,8 +47,19 @@ const pricesSlice = createSlice({
           return max;
         }, null);
 
+        const bestSpread = action.payload.reduce((min, current) => {
+          if (current.ask && current.bid) {
+            const currentSpread = current.ask - current.bid;
+            if (min === null || currentSpread < (min.ask - min.bid)) {
+              return current;
+            }
+          }
+          return min;
+        }, null);
+
         state.bestBuy = bestBuy;
         state.bestSell = bestSell;
+        state.bestSpread = bestSpread;
       })
       .addCase(fetchPrices.rejected, (state, action) => {
         state.loading = false;

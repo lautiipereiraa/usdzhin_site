@@ -10,6 +10,7 @@ import { fetchDollars } from "@store/dolarSlice";
 import { fetchQuotes } from "@store/quotesSlice";
 import DivisorAlert from "@components/DivisorAlert";
 import TelegramAlert from "@components/TelegramAlert";
+import ProvidersList from "@components/ProvidersList";
 import { useDispatch, useSelector } from "react-redux";
 import BestPricesCard from "@components/BestPricesCard";
 import { motion, AnimatePresence } from "framer-motion";
@@ -81,6 +82,13 @@ const App = () => {
             <div className="mt-6">
               <BestPricesCard />
             </div>
+
+            <section className="mt-8 mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xl text-[color:var(--text-blue-800)] font-medium">Todos los proveedores</span>
+              </div>
+              <ProvidersList />
+            </section>
           </motion.div>
 
           {!isLoading && (
@@ -131,7 +139,7 @@ const App = () => {
               </section>
 
               <section className="mt-6">
-                <TelegramAlert delay={10000} interval={20000} duration={8000} />
+                <TelegramAlert delay={30000} interval={120000} duration={8000} />
               </section>
             </motion.div>
           )}
