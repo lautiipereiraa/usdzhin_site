@@ -2,7 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDownBlueIcon from "@icons/ArrowDownBlueIcon";
 import { fetchPrices, setSelectedCurrency } from "@store/pricesSlice";
-import { useTheme } from "../context/ThemeContext";
+<<<<<<< Updated upstream
+=======
+import { useTheme } from "@context/ThemeContext";
+>>>>>>> Stashed changes
 
 const SelectBox = () => {
     const [open, setOpen] = useState(false);
@@ -55,8 +58,8 @@ const SelectBox = () => {
                                 setOpen(false);
                             }}
                             className={`w-full px-4 py-2 text-left hover:bg-[color:var(--hero-update-bg)] transition-colors duration-200 flex items-center ${opt.label === selected.label
-                                    ? (theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-[color:var(--hero-update-bg)] text-[color:var(--text-blue-600)]')
-                                    : (theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]')
+                                ? (theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-[color:var(--hero-update-bg)] text-[color:var(--text-blue-600)]')
+                                : (theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]')
                                 }`}
                         >
                             <span className={`mr-2 text-base ${theme === 'light' ? 'text-blue-800' : 'text-[color:var(--text-blue-800)]'}`}>{opt.icon}</span>

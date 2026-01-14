@@ -1,6 +1,10 @@
+<<<<<<< Updated upstream
+import logo from "@assets/logo.png"
+=======
 import logo from "@assets/logo.png";
-import logoDarkMode from "../assets/icon_dark_mode.png";
-import { useTheme } from "../context/ThemeContext";
+import logoDarkMode from "@assets/icon_dark_mode.png";
+import { useTheme } from "@context/ThemeContext";
+>>>>>>> Stashed changes
 import { useState, useEffect } from "react";
 import { fetchPrices } from "@store/pricesSlice";
 import CircleLoading from "@icons/CircleLoading";
