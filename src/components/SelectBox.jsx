@@ -2,10 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDownBlueIcon from "@icons/ArrowDownBlueIcon";
 import { fetchPrices, setSelectedCurrency } from "@store/pricesSlice";
-<<<<<<< Updated upstream
-=======
 import { useTheme } from "@context/ThemeContext";
->>>>>>> Stashed changes
 
 const SelectBox = () => {
     const [open, setOpen] = useState(false);

@@ -66,9 +66,6 @@ export default function BestPricesCard() {
                     className="bg-[color:var(--card-bg)] backdrop-blur-sm rounded-2xl p-6 shadow-xs border border-[color:var(--border-color)] hover:shadow-md duration-300 flex flex-col justify-between hover:scale-102 transition-transform"
                 >
                     <div className="flex items-center justify-between mb-4">
-<<<<<<< Updated upstream
-                        <h3 className="text-lg font-medium text-blue-800">{card.title}</h3>
-=======
                         <div className="flex items-start gap-1.5 max-w-[85%]">
                             <h3 className="text-base sm:text-lg font-medium text-[color:var(--text-blue-800)] leading-tight">{card.title}</h3>
                             {card.type === "spread" && (
@@ -80,7 +77,6 @@ export default function BestPricesCard() {
                                 </div>
                             )}
                         </div>
->>>>>>> Stashed changes
                         <img
                             src={card.logoUrl}
                             alt={card.title}
@@ -90,24 +86,19 @@ export default function BestPricesCard() {
                                 e.target.src = default_img;
                             }}
                         />
-                    </div >
-        <div className="flex justify-between items-center">
-            <span className="text-sm text-blue-600">
-                {card.type === "buy" ? "Compra" : "Venta"}
-=======
+                    </div>
+                    <div className="flex justify-between items-center">
                         <span className="text-sm text-[color:var(--text-blue-600)]">
-                    {card.type === "buy" ? "Venta (Tú compras)" : card.type === "sell" ? "Compra (Tú vendes)" : "Spread"}
->>>>>>> Stashed changes
-                </span>
-                <span className="text-xl font-semibold text-[color:var(--text-blue-800)] flex items-center gap-1">
-                    {currencyFormatter.format(card.price)}
-                    {card.pct_variation > 0 && <ArrowUpIcon />}
-                    {card.pct_variation < 0 && <ArrowDownIcon />}
-                </span>
+                            {card.type === "buy" ? "Venta (Tú compras)" : card.type === "sell" ? "Compra (Tú vendes)" : "Spread"}
+                        </span>
+                        <span className="text-xl font-semibold text-[color:var(--text-blue-800)] flex items-center gap-1">
+                            {currencyFormatter.format(card.price)}
+                            {card.pct_variation > 0 && <ArrowUpIcon />}
+                            {card.pct_variation < 0 && <ArrowDownIcon />}
+                        </span>
+                    </div>
+                </a>
+            ))}
         </div>
-                </a >
-            ))
-}
-        </div >
     );
 }
