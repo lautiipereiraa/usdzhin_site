@@ -13,6 +13,11 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
     maximumFractionDigits: 2,
 });
 
+const normalizePrice = (val) => {
+    const n = Number(val);
+    return n > 100000 ? n / 1000 : n;
+};
+
 export default function BestPricesCard() {
     const { bestBuy, bestSell, bestSpread, loading } = useSelector((state) => state.prices);
 
@@ -27,7 +32,8 @@ export default function BestPricesCard() {
     const cards = [
         bestBuy && {
             title: `Mejor precio para comprar: ${bestBuy.prettyName}`,
-            price: bestBuy.ask,
+            price: normalizePrice(bestBuy.ask),
+            label: "Venta",
             type: "buy",
             logoUrl: bestBuy.logoUrl || bestBuy.logo || default_img,
             url: bestBuy.url || "#",
@@ -35,7 +41,8 @@ export default function BestPricesCard() {
         },
         bestSell && {
             title: `Mejor precio para vender: ${bestSell.prettyName}`,
-            price: bestSell.bid,
+            price: normalizePrice(bestSell.bid),
+            label: "Compra",
             type: "sell",
             logoUrl: bestSell.logoUrl || bestSell.logo || default_img,
             url: bestSell.url || "#",
@@ -43,7 +50,8 @@ export default function BestPricesCard() {
         },
         bestSpread && {
             title: `Menor spread: ${bestSpread.prettyName}`,
-            price: bestSpread.ask - bestSpread.bid,
+            price: normalizePrice(bestSpread.ask) - normalizePrice(bestSpread.bid),
+            label: "Spread",
             type: "spread",
             logoUrl: bestSpread.logoUrl || bestSpread.logo || default_img,
             url: bestSpread.url || "#",
@@ -51,9 +59,7 @@ export default function BestPricesCard() {
         },
     ].filter(Boolean);
 
-    if (cards.length === 0) {
-        return <div className="text-center text-[color:var(--text-blue-800)] text-lg">No hay datos de precios disponibles.</div>;
-    }
+    if (cards.length === 0) return null;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
@@ -63,38 +69,34 @@ export default function BestPricesCard() {
                     href={card.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[color:var(--card-bg)] backdrop-blur-sm rounded-2xl p-6 shadow-xs border border-[color:var(--border-color)] hover:shadow-md duration-300 flex flex-col justify-between hover:scale-102 transition-transform"
+                    className="bg-[color:var(--card-bg)] backdrop-blur-sm rounded-2xl p-6 border border-[color:var(--border-color)] hover:shadow-md transition-all flex flex-col justify-between"
                 >
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-start gap-1.5 max-w-[85%]">
-                            <h3 className="text-base sm:text-lg font-medium text-[color:var(--text-blue-800)] leading-tight">{card.title}</h3>
-                            {card.type === "spread" && (
-                                <div className="group relative flex-shrink-0">
-                                    <InfoIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 cursor-help mt-1" />
-                                    <div className="absolute bottom-full left-[-20px] sm:left-1/2 sm:-translate-x-1/2 mb-2 w-40 sm:w-48 p-2 bg-gray-900/95 text-white text-[10px] sm:text-xs rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 backdrop-blur-sm border border-white/10">
-                                        Es la diferencia entre compra y venta. ¡Cuanto más bajo, mejor!
-                                    </div>
-                                </div>
-                            )}
+                            <h3 className="text-base font-medium text-[color:var(--text-blue-800)] leading-tight">
+                                {card.title}
+                            </h3>
+                            {card.type === "spread" && <InfoIcon className="w-4 h-4 text-blue-500 mt-1" />}
                         </div>
                         <img
                             src={card.logoUrl}
-                            alt={card.title}
+                            alt="logo"
                             className="h-12 w-12 rounded-full object-cover"
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = default_img;
-                            }}
+                            onError={(e) => (e.target.src = default_img)}
                         />
                     </div>
+
                     <div className="flex justify-between items-center">
-                        <span className="text-sm text-[color:var(--text-blue-600)]">
-                            {card.type === "buy" ? "Venta (Tú compras)" : card.type === "sell" ? "Compra (Tú vendes)" : "Spread"}
+                        <span className="text-xs font-semibold text-[color:var(--text-blue-600)] uppercase">
+                            {card.label}
                         </span>
-                        <span className="text-xl font-semibold text-[color:var(--text-blue-800)] flex items-center gap-1">
+                        <span className="text-xl font-bold text-[color:var(--text-blue-800)] flex items-center gap-1">
                             {currencyFormatter.format(card.price)}
-                            {card.pct_variation > 0 && <ArrowUpIcon />}
-                            {card.pct_variation < 0 && <ArrowDownIcon />}
+                            {card.pct_variation > 0 ? (
+                                <ArrowUpIcon className="text-red-500 w-4 h-4" />
+                            ) : (
+                                <ArrowDownIcon className="text-green-500 w-4 h-4" />
+                            )}
                         </span>
                     </div>
                 </a>
