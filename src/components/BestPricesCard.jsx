@@ -13,6 +13,11 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
     maximumFractionDigits: 2,
 });
 
+const normalizePrice = (val) => {
+    const n = Number(val);
+    return n > 100000 ? n / 1000 : n;
+};
+
 export default function BestPricesCard() {
     const { bestBuy, bestSell, bestSpread, loading } = useSelector((state) => state.prices);
 
@@ -54,9 +59,7 @@ export default function BestPricesCard() {
         },
     ].filter(Boolean);
 
-    if (cards.length === 0) {
-        return <div className="text-center text-[color:var(--text-blue-800)] text-lg">No hay datos de precios disponibles.</div>;
-    }
+    if (cards.length === 0) return null;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-8">
