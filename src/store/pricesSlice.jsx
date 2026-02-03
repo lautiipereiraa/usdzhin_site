@@ -31,24 +31,48 @@ const pricesSlice = createSlice({
       })
       .addCase(fetchPrices.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
 
-        const bestBuy = action.payload.reduce((min, current) => {
-          if (current.ask && (min === null || current.ask < min.ask)) {
+        const isStable = ["usd", "usdt", "usdc"].includes(state.selectedCurrency.name);
+
+        const normalizedData = action.payload.map(provider => {
+          let ask = provider.totalAsk || provider.ask || 0;
+          let bid = provider.totalBid || provider.bid || 0;
+
+          if (isStable) {
+            if (ask > 10000) ask = ask / 1000;
+            if (bid > 10000) bid = bid / 1000;
+          }
+
+          return {
+            ...provider,
+            ask: ask,
+            bid: bid,
+            originalAsk: provider.ask,
+            originalBid: provider.bid
+          };
+        });
+
+        state.data = normalizedData;
+
+        const bestProviders = normalizedData.filter(p => p.is24x7);
+        const dataForBest = bestProviders.length > 0 ? bestProviders : normalizedData;
+
+        const bestBuy = dataForBest.reduce((min, current) => {
+          if (current.ask > 0 && (min === null || current.ask < min.ask)) {
             return current;
           }
           return min;
         }, null);
 
-        const bestSell = action.payload.reduce((max, current) => {
-          if (current.bid && (max === null || current.bid > max.bid)) {
+        const bestSell = dataForBest.reduce((max, current) => {
+          if (current.bid > 0 && (max === null || current.bid > max.bid)) {
             return current;
           }
           return max;
         }, null);
 
-        const bestSpread = action.payload.reduce((min, current) => {
-          if (current.ask && current.bid) {
+        const bestSpread = dataForBest.reduce((min, current) => {
+          if (current.ask > 0 && current.bid > 0) {
             const currentSpread = current.ask - current.bid;
             if (min === null || currentSpread < (min.ask - min.bid)) {
               return current;
