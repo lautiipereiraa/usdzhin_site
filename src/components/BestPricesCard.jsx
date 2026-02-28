@@ -13,11 +13,6 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
     maximumFractionDigits: 2,
 });
 
-const normalizePrice = (val) => {
-    const n = Number(val);
-    return n > 100000 ? n / 1000 : n;
-};
-
 export default function BestPricesCard() {
     const { bestBuy, bestSell, bestSpread, loading } = useSelector((state) => state.prices);
 
@@ -30,48 +25,48 @@ export default function BestPricesCard() {
     }
 
     const cards = [
-        bestBuy && {
-            prettyName: bestBuy.prettyName,
-            price: bestBuy.ask,
+        bestBuy && bestBuy.length > 0 && {
+            providers: bestBuy.map(p => ({
+                prettyName: p.prettyName,
+                logoUrl: p.logoUrl || p.logo || default_img,
+                url: p.url || "#",
+                is24x7: p.is24x7,
+            })),
+            price: bestBuy[0].ask,
             type: "buy",
-            logoUrl: bestBuy.logoUrl || bestBuy.logo || default_img,
-            url: bestBuy.url || "#",
-            pct_variation: bestBuy.pct_variation,
-            is24x7: bestBuy.is24x7,
         },
-        bestSell && {
-            prettyName: bestSell.prettyName,
-            price: bestSell.bid,
+        bestSell && bestSell.length > 0 && {
+            providers: bestSell.map(p => ({
+                prettyName: p.prettyName,
+                logoUrl: p.logoUrl || p.logo || default_img,
+                url: p.url || "#",
+                is24x7: p.is24x7,
+            })),
+            price: bestSell[0].bid,
             type: "sell",
-            logoUrl: bestSell.logoUrl || bestSell.logo || default_img,
-            url: bestSell.url || "#",
-            pct_variation: bestSell.pct_variation,
-            is24x7: bestSell.is24x7,
         },
-        bestSpread && {
-            prettyName: bestSpread.prettyName,
-            price: bestSpread.ask - bestSpread.bid,
+        bestSpread && bestSpread.length > 0 && {
+            providers: bestSpread.map(p => ({
+                prettyName: p.prettyName,
+                logoUrl: p.logoUrl || p.logo || default_img,
+                url: p.url || "#",
+                is24x7: p.is24x7,
+            })),
+            price: bestSpread[0].ask - bestSpread[0].bid,
             type: "spread",
-            logoUrl: bestSpread.logoUrl || bestSpread.logo || default_img,
-            url: bestSpread.url || "#",
-            pct_variation: bestSpread.pct_variation,
-            is24x7: bestSpread.is24x7,
         },
     ].filter(Boolean);
 
     if (cards.length === 0) return null;
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full mb-8">
             {cards.map((card, idx) => (
-                <a
+                <div
                     key={idx}
-                    href={card.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[color:var(--card-bg)] backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[color:var(--border-color)] hover:bg-[color:var(--card-hover-bg)] transition-all duration-300 flex flex-col group relative overflow-hidden"
+                    className="bg-[color:var(--card-bg)] backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-xl border border-[color:var(--border-color)] hover:bg-[color:var(--card-hover-bg)] transition-all duration-300 flex flex-col group relative overflow-hidden"
                 >
-                    <div className="flex items-center gap-2 mb-6">
+                    <div className="flex items-center gap-2 mb-4 sm:mb-6">
                         {card.type === "buy" ? (
                             <ArrowDownIcon className="text-green-500 w-5 h-5" />
                         ) : card.type === "sell" ? (
@@ -84,39 +79,42 @@ export default function BestPricesCard() {
                         </h3>
                     </div>
 
-                    <div className="mb-6">
+                    <div className="mb-4 sm:mb-6">
                         <span className="text-4xl sm:text-5xl font-bold text-[color:var(--text-blue-800)] tracking-tighter">
                             {currencyFormatter.format(card.price)}
                         </span>
                     </div>
 
-                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-[color:var(--border-color)] opacity-80 group-hover:opacity-100 transition-opacity">
-                        <div className="flex items-center gap-2 bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full border border-[color:var(--border-color)]">
-                            <img
-                                src={card.logoUrl}
-                                alt={card.prettyName}
-                                className="h-5 w-5 rounded-full object-cover"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = default_img;
-                                }}
-                            />
-                            <span className="text-sm font-medium text-[color:var(--text-blue-600)]">
-                                {card.prettyName}
-                            </span>
-                            {card.is24x7 && (
-                                <span className="text-[10px] font-bold bg-green-500/20 text-green-500 px-1.5 py-0.5 rounded-md leading-none">
-                                    24/7
+                    <div className="flex flex-wrap items-center gap-2 mt-auto pt-3 sm:pt-4 border-t border-[color:var(--border-color)] opacity-80 group-hover:opacity-100 transition-opacity">
+                        {card.providers.map((provider, pIdx) => (
+                            <a
+                                key={pIdx}
+                                href={provider.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 bg-black/5 dark:bg-white/5 px-3 py-2 rounded-full border border-[color:var(--border-color)] hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                            >
+                                <img
+                                    src={provider.logoUrl}
+                                    alt={provider.prettyName}
+                                    className="h-5 w-5 rounded-full object-cover"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = default_img;
+                                    }}
+                                />
+                                <span className="text-sm font-medium text-[color:var(--text-blue-600)]">
+                                    {provider.prettyName}
                                 </span>
-                            )}
-                        </div>
-                        <div className="text-[color:var(--text-blue-400)]">
-                            <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="9 5l7 7-7 7" />
-                            </svg>
-                        </div>
+                                {provider.is24x7 && (
+                                    <span className="text-[10px] font-bold bg-green-500/20 text-green-500 px-1.5 py-0.5 rounded-md leading-none">
+                                        24/7
+                                    </span>
+                                )}
+                            </a>
+                        ))}
                     </div>
-                </a>
+                </div>
             ))}
         </div>
     );
