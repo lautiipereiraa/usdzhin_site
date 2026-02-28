@@ -12,9 +12,9 @@ const pricesSlice = createSlice({
   initialState: {
     data: null,
     loading: false,
-    bestBuy: null,
-    bestSell: null,
-    bestSpread: null,
+    bestBuy: [],
+    bestSell: [],
+    bestSpread: [],
     selectedCurrency: { icon: "$", label: "US Dolar (USD)", name: "usd" },
     error: null,
   },
@@ -57,29 +57,38 @@ const pricesSlice = createSlice({
         const bestProviders = normalizedData.filter(p => p.is24x7);
         const dataForBest = bestProviders.length > 0 ? bestProviders : normalizedData;
 
-        const bestBuy = dataForBest.reduce((min, current) => {
-          if (current.ask > 0 && (min === null || current.ask < min.ask)) {
-            return current;
+        const bestBuyPrice = dataForBest.reduce((minAsk, current) => {
+          if (current.ask > 0 && (minAsk === null || current.ask < minAsk)) {
+            return current.ask;
           }
-          return min;
+          return minAsk;
         }, null);
+        const bestBuy = bestBuyPrice !== null
+          ? dataForBest.filter(p => p.ask === bestBuyPrice)
+          : [];
 
-        const bestSell = dataForBest.reduce((max, current) => {
-          if (current.bid > 0 && (max === null || current.bid > max.bid)) {
-            return current;
+        const bestSellPrice = dataForBest.reduce((maxBid, current) => {
+          if (current.bid > 0 && (maxBid === null || current.bid > maxBid)) {
+            return current.bid;
           }
-          return max;
+          return maxBid;
         }, null);
+        const bestSell = bestSellPrice !== null
+          ? dataForBest.filter(p => p.bid === bestSellPrice)
+          : [];
 
-        const bestSpread = dataForBest.reduce((min, current) => {
+        const bestSpreadValue = dataForBest.reduce((minSpread, current) => {
           if (current.ask > 0 && current.bid > 0) {
             const currentSpread = current.ask - current.bid;
-            if (min === null || currentSpread < (min.ask - min.bid)) {
-              return current;
+            if (minSpread === null || currentSpread < minSpread) {
+              return currentSpread;
             }
           }
-          return min;
+          return minSpread;
         }, null);
+        const bestSpread = bestSpreadValue !== null
+          ? dataForBest.filter(p => p.ask > 0 && p.bid > 0 && (p.ask - p.bid) === bestSpreadValue)
+          : [];
 
         state.bestBuy = bestBuy;
         state.bestSell = bestSell;
