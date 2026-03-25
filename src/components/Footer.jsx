@@ -5,70 +5,68 @@ import LinkedinIcon from "@icons/LinkedinIcon";
 
 const Footer = () => {
   return (
-    <>
-      <footer className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-[color:var(--background-color)] dark:to-[color:var(--background-color)] border-t border-[color:var(--border-color)] mt-12">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-2 mb-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">$</span>
-                </div>
-                <h3 className="text-xl font-bold text-[color:var(--text-color)]">USDzhin</h3>
-              </div>
+    <footer className="w-full border-t border-[color:var(--border-color)] bg-[color:var(--background-color)] mt-auto transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          <div className="flex flex-col items-center md:items-start space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-xl text-[color:var(--text-color)] tracking-tighter">USDzhin</span>
             </div>
-
-            <div className="flex flex-col items-center space-y-4">
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.linkedin.com/in/lautaro-pereira-garobi-394810229/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-white dark:bg-[color:var(--card-bg)] rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group"
-                >
-                  <LinkedinIcon />
-                </a>
-
-                <a
-                  href="https://github.com/lautiipereiraa"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-white dark:bg-[color:var(--card-bg)] rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group"
-                >
-                  <GitHubIcon />
-                </a>
-
-                <a
-                  href="https://mail.google.com/mail/?view=cm&to=lautaropereirag@gmail.com"
-                  target="_blank"
-                  className="flex items-center justify-center w-10 h-10 bg-white dark:bg-[color:var(--card-bg)] rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group"
-                >
-                  <EmailIcon />
-                </a>
-              </div>
-            </div>
-
-            <div className="text-center md:text-right">
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <p>Datos actualizados cada minuto</p>
-                <p className="text-xs">Fuente: DolarApi y ComparaDolar</p>
-              </div>
-            </div>
+            <p className="text-sm text-[color:var(--text-color)] opacity-70">
+              Datos actualizados cada minuto
+            </p>
+            <p className="text-xs text-[color:var(--text-color)] opacity-50 uppercase tracking-widest font-medium">
+              Fuente: DolarApi y ComparaDolar
+            </p>
+            <a 
+              href="https://github.com/lautiipereiraa/usdzhinbot" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mt-4 pt-2 text-xs font-semibold text-[color:var(--text-color)] opacity-80 hover:opacity-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1.5"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              USDzhin Bot para Telegram (en desarrollo)
+            </a>
           </div>
 
-          <div className="border-t border-[color:var(--border-color)] mt-6 pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex justify-center space-x-4">
+            <a
+              href="https://www.linkedin.com/in/lautaro-pereira-garobi-394810229/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <LinkedinIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://github.com/lautiipereiraa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              <GitHubIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://mail.google.com/mail/?view=cm&to=lautaropereirag@gmail.com"
+              target="_blank"
+              className="p-2 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <EmailIcon className="w-5 h-5" />
+            </a>
+          </div>
 
-              <div className="flex items-center space-x-1 mb-2 md:mb-0">
-                <span>© 2024 USDzhin. Made in Argentina, Buenos Aires. </span>
-                <HeartIcon />
-              </div>
+          <div className="flex flex-col items-center md:items-end text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center space-x-1.5">
+              <span>© {new Date().getFullYear()} USDzhin.</span>
+            </div>
+            <div className="flex items-center mt-1 space-x-1">
+              <span>Made in Argentina</span>
+              <HeartIcon className="w-3.5 h-3.5 text-rose-500" />
             </div>
           </div>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 };
 

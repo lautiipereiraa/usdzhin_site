@@ -1,4 +1,4 @@
-export const SunIcon = () => (
+export const SunIcon = ({ className = "" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -9,6 +9,7 @@ export const SunIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={className}
   >
     <circle cx="12" cy="12" r="5" />
     <line x1="12" y1="1" x2="12" y2="3" />
