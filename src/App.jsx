@@ -8,7 +8,6 @@ import { fetchUSDC } from "@store/usdcSlice";
 import SelectBox from "@components/SelectBox";
 import { fetchDollars } from "@store/dolarSlice";
 import DivisorAlert from "@components/DivisorAlert";
-import TelegramAlert from "@components/TelegramAlert";
 import ProvidersList from "@components/ProvidersList";
 import { useDispatch, useSelector } from "react-redux";
 import BestPricesCard from "@components/BestPricesCard";
@@ -75,7 +74,7 @@ const App = () => {
             <section className="mt-6 mb-6">
               <Divisor />
             </section>
-            <span className="w-full text-2xl text-[color:var(--text-blue-800)]">Mejores precios</span>
+            <span className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mejores precios</span>
 
             <div className="mt-6">
               <BestPricesCard />
@@ -83,7 +82,7 @@ const App = () => {
 
             <section className="mt-8 mb-4">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xl text-[color:var(--text-blue-800)] font-medium">Todos los proveedores</span>
+                <span className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Todos los proveedores</span>
               </div>
               <ProvidersList />
             </section>
@@ -100,10 +99,10 @@ const App = () => {
                 <Divisor />
               </section>
               <div className="flex items-center justify-between">
-                <span className="w-full text-2xl text-[color:var(--text-blue-800)]">Precio dolares</span>
+                <span className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Precio dolares</span>
                 <div className="flex justify-end items-center w-full gap-2">
-                  <span className="text-sm text-[color:var(--text-blue-600)]">(Última actualización: </span>
-                  <span className="text-sm text-[color:var(--text-blue-600)]">{fechaActualizacion || ""})</span>
+                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">(Última actualización: </span>
+                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">{fechaActualizacion || ""})</span>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
@@ -132,12 +131,8 @@ const App = () => {
                 <InfoCard />
               </section>
 
-              <section className="mt-6">
+              <section className="mt-6 mb-6">
                 <Divisor />
-              </section>
-
-              <section className="mt-6">
-                <TelegramAlert delay={30000} interval={120000} duration={8000} />
               </section>
             </motion.div>
           )}
