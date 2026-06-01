@@ -5,6 +5,9 @@ import { store } from "@store/store";
 import { ThemeProvider } from "./context/ThemeContext";
 import App from "./App";
 import "./index.css";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize(import.meta.env.VITE_GA_ID);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
