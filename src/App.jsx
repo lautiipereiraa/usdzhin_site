@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import ReactGA from "react-ga4";
 import Hero from "@components/Hero";
 import Card from "@components/Card";
 import Layout from "@components/Layout";
@@ -23,6 +24,7 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchDollars());
     dispatch(fetchUSDC());
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, [dispatch]);
 
   const isLoading = loadingDollars || loadingUSDC;
