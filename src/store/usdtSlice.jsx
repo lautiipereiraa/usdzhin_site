@@ -2,7 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchUSDT = createAsyncThunk("usdt/fetchUSDT", async () => {
-  const res = await axios.get("https://api.comparadolar.ar/crypto/usdt");
+  const res = await axios.get("https://api.comparadolar.ar/usdt");
   return res.data;
 });
 

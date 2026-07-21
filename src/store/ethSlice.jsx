@@ -2,7 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchEth = createAsyncThunk("eth/fetchEth", async () => {
-    const res = await axios.get("https://api.comparadolar.ar/crypto/eth");
+    const res = await axios.get("https://api.comparadolar.ar/eth");
     return res.data;
 });
 
