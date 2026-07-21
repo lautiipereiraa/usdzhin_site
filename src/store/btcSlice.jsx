@@ -2,7 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchBTC = createAsyncThunk("btc/fetchBTC", async () => {
-    const res = await axios.get("https://api.comparadolar.ar/crypto/btc");
+    const res = await axios.get("https://api.comparadolar.ar/btc");
     return res.data;
 });
 
