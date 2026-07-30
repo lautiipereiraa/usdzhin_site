@@ -1,0 +1,24 @@
+# Base: define el stack de producción.
+# En dev, docker-compose.override.yml se carga automáticamente encima.
+# Para levantar producción sin el override: docker compose -f docker-compose.yml up -d
+name: ${APP_NAME:-usdzhin}
+
+services:
+  frontend:
+    image: ${APP_NAME:-usdzhin}-frontend-prod
+    container_name: ${APP_NAME:-usdzhin}-frontend
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: prod
+      args:
+        VITE_GA_ID: ${VITE_GA_ID:-}
+    restart: unless-stopped
+    # Sin `ports`: en producción el único que publica al host es el reverse
+    # proxy, y todavía no lo montamos (falta el dominio).
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: ${APP_NAME:-usdzhin}-network
