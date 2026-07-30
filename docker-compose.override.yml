@@ -1,0 +1,28 @@
+# Dev: hot reload y puerto al host. Compose lo carga solo, sin flags, asi que
+# `docker compose up -d` levanta desarrollo y nada mas.
+#
+# El nombre de proyecto propio aisla este stack de cualquier otro en el mismo
+# daemon: contenedores, redes y volumenes quedan prefijados con `usdzhin-dev`.
+name: ${APP_NAME:-usdzhin}-dev
+
+services:
+  frontend:
+    image: ${APP_NAME:-usdzhin}-frontend-dev
+    container_name: ${APP_NAME:-usdzhin}-frontend-dev
+    build:
+      target: dev
+      args:
+        HOST_UID: ${HOST_UID:-1001}
+        HOST_GID: ${HOST_GID:-1001}
+    volumes:
+      - ./:/app
+      # node_modules como volumen: el bind mount de arriba, si no, taparia
+      # el que instalo la imagen y dejaria el contenedor sin dependencias.
+      - /app/node_modules
+    ports:
+      # Default 127.0.0.1: quien clone el repo no expone nada sin querer.
+      # Poner BIND_HOST=0.0.0.0 en el .env local para abrirlo a internet.
+      # Ojo: un puerto publicado por Docker no lo filtra el firewall del host.
+      - "${BIND_HOST:-127.0.0.1}:${FRONTEND_PORT:-5173}:5173"
+    environment:
+      - NODE_ENV=development
