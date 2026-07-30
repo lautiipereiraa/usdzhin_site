@@ -1,0 +1,22 @@
+# Receta de build de la imagen de produccion.
+#
+# Produccion NO se corre desde aca: vive en /srv/stacks/usdzhin, que referencia
+# la imagen ya construida por tag. Este archivo existe solo para construirla:
+#
+#   APP_VERSION=$(git rev-parse --short=7 HEAD) \
+#     docker compose -f docker-compose.yml build
+#
+# El sufijo `-build` en el nombre de proyecto es deliberado: garantiza que un
+# `up` accidental desde el working copy no pueda reemplazar el contenedor que
+# esta en linea. Sin container_name, sin restart, sin puertos, a proposito.
+name: ${APP_NAME:-usdzhin}-build
+
+services:
+  frontend:
+    image: ${APP_NAME:-usdzhin}-frontend-prod:${APP_VERSION:-local}
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: prod
+      args:
+        VITE_GA_ID: ${VITE_GA_ID:-}

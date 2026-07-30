@@ -1,0 +1,36 @@
+# Dependencias: se instalan dentro de la imagen con npm ci
+node_modules
+
+# Artefactos de build
+dist
+dist-ssr
+*.local
+
+# Git
+.git
+.gitignore
+.github
+
+# Docker (no hace falta dentro de la imagen)
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+
+# Secretos y config local: nunca deben entrar a una imagen
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs
+npm-debug.log*
+
+# Editores / SO
+.vscode
+.idea
+.DS_Store
+*.sw?
+
+# Docs
+README.md
