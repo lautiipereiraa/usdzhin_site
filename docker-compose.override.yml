@@ -1,9 +1,8 @@
-# Dev: hot reload, puerto al host y build del target `dev`.
-# Compose lo carga solo, sin flags. Nunca se usa en producción.
+# Dev: hot reload y puerto al host. Compose lo carga solo, sin flags, asi que
+# `docker compose up -d` levanta desarrollo y nada mas.
 #
-# El `name` distinto es lo que aísla dev de prod: contenedores, redes y
-# volúmenes quedan prefijados con `usdzhin-dev`, así que los dos stacks pueden
-# convivir en el mismo daemon sin pisarse.
+# El nombre de proyecto propio aisla este stack de cualquier otro en el mismo
+# daemon: contenedores, redes y volumenes quedan prefijados con `usdzhin-dev`.
 name: ${APP_NAME:-usdzhin}-dev
 
 services:
@@ -17,8 +16,8 @@ services:
         HOST_GID: ${HOST_GID:-1001}
     volumes:
       - ./:/app
-      # node_modules como volumen: el bind mount de arriba, si no, taparía
-      # el que instaló la imagen y dejaría el contenedor sin dependencias.
+      # node_modules como volumen: el bind mount de arriba, si no, taparia
+      # el que instalo la imagen y dejaria el contenedor sin dependencias.
       - /app/node_modules
     ports:
       # Default 127.0.0.1: quien clone el repo no expone nada sin querer.
@@ -27,9 +26,3 @@ services:
       - "${BIND_HOST:-127.0.0.1}:${FRONTEND_PORT:-5173}:5173"
     environment:
       - NODE_ENV=development
-
-networks:
-  # El compose base la nombra `${APP_NAME}-network`. Si dev no la renombra, los
-  # dos stacks apuntan a la misma red y Compose falla por el label de proyecto.
-  app-network:
-    name: ${APP_NAME:-usdzhin}-dev-network
