@@ -36,7 +36,7 @@ const SelectBox = () => {
     }, []);
 
     return (
-        <div className="flex justify-center mb-10 relative z-40" ref={ref}>
+        <div className="flex justify-center relative z-40" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
                 className="flex justify-between items-center px-5 py-3 bg-[color:var(--card-bg)] border border-[color:var(--border-color)] rounded-xl shadow-sm hover:border-blue-500/50 hover:shadow-md transition-all duration-300 font-semibold min-w-[220px] cursor-pointer group"

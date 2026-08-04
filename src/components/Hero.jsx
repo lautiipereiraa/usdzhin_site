@@ -12,21 +12,19 @@ const Hero = () => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
 
-  const { loading, selectedCurrency } = useSelector((state) => state.prices);
+  const { loading, selectedCurrency, lastFetchedAt } = useSelector((state) => state.prices);
 
-  const [lastUpdate, setLastUpdate] = useState("");
   const [cooldown, setCooldown] = useState(0);
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  useEffect(() => {
-    if (!lastUpdate && !loading) {
-      setLastUpdate(getCurrentTime());
-    }
-  }, [lastUpdate, loading]);
+  // La hora sale del ultimo fetch exitoso que registra el store, no del momento
+  // en que monto el componente: antes decia la hora de carga de la pagina aunque
+  // el precio en pantalla fuera de mucho antes, y nunca se actualizaba sola.
+  const lastUpdate = lastFetchedAt
+    ? new Date(lastFetchedAt).toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    : "";
 
   useEffect(() => {
     if (cooldown > 0) {
@@ -42,7 +40,6 @@ const Hero = () => {
 
     try {
       await dispatch(fetchPrices(selectedCurrency.name)).unwrap();
-      setLastUpdate(getCurrentTime());
       setCooldown(cooldown_sec);
     } catch (err) {
       console.error("Error al actualizar precios:", err);
