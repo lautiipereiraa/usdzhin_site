@@ -4,8 +4,7 @@ import ArrowDownIcon from "@icons/ArrowDownIcon";
 import InfoIcon from "@icons/InfoIcon";
 import SkeletonBestPriceCard from "./SkeletonBestPriceCard";
 import { motion } from "framer-motion";
-
-const default_img = "./src/assets/default_img.png";
+import default_img from "@assets/default_img.png";
 
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -14,10 +13,37 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
     maximumFractionDigits: 2,
 });
 
-export default function BestPricesCard() {
-    const { bestBuy, bestSell, bestSpread, loading } = useSelector((state) => state.prices);
+const amountFormatter = new Intl.NumberFormat("es-AR", {
+    maximumFractionDigits: 4,
+});
 
-    if (loading) {
+// Con montos grandes el total no entra en una tarjeta de un tercio de ancho,
+// asi que la tipografia baja por tramos en vez de desbordar.
+const priceSizeClass = (value) => {
+    const len = currencyFormatter.format(value).length;
+    if (len > 16) return "text-2xl sm:text-3xl";
+    if (len > 12) return "text-3xl sm:text-4xl";
+    return "text-4xl sm:text-5xl";
+};
+
+export default function BestPricesCard() {
+    const {
+        data,
+        bestBuy,
+        bestSell,
+        bestSpread,
+        runnerUpBuy,
+        runnerUpSell,
+        podiumIs24x7,
+        amount,
+        selectedCurrency,
+        loading,
+    } = useSelector((state) => state.prices);
+
+    // Solo en la carga inicial. Con el refresco automatico cada minuto, mostrar
+    // el spinner en cada fetch haria parpadear la seccion entera sin motivo:
+    // mientras se revalida se sigue viendo el ultimo dato bueno.
+    if (loading && !data) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[12rem] w-full mb-12">
                 <div className="w-5 h-5 border-[2px] border-[color:var(--border-color)] border-t-[color:var(--text-blue-600)] rounded-full animate-spin"></div>
@@ -28,35 +54,46 @@ export default function BestPricesCard() {
         );
     }
 
+    const ticker = selectedCurrency.label.match(/\(([^)]+)\)/)?.[1] ?? "";
+    const showTotals = amount !== 1;
+
+    const toProviders = (list) => list.map(p => ({
+        prettyName: p.prettyName,
+        logoUrl: p.logoUrl || p.logo || default_img,
+        url: p.url || "#",
+        is24x7: p.is24x7,
+    }));
+
     const cards = [
         bestBuy && bestBuy.length > 0 && {
-            providers: bestBuy.map(p => ({
-                prettyName: p.prettyName,
-                logoUrl: p.logoUrl || p.logo || default_img,
-                url: p.url || "#",
-                is24x7: p.is24x7,
-            })),
-            price: bestBuy[0].ask,
+            providers: toProviders(bestBuy),
+            unitPrice: bestBuy[0].ask,
+            // Comprar mas barato es un ahorro: lo que se paga de mas en la
+            // siguiente opcion, por unidad o por el monto entero.
+            unitDelta: runnerUpBuy ? runnerUpBuy.price - bestBuy[0].ask : null,
+            runnerUp: runnerUpBuy,
+            deltaVerb: "Ahorrás",
+            deltaExtra: "",
+            deltaAction: "comprando",
             type: "buy",
         },
         bestSell && bestSell.length > 0 && {
-            providers: bestSell.map(p => ({
-                prettyName: p.prettyName,
-                logoUrl: p.logoUrl || p.logo || default_img,
-                url: p.url || "#",
-                is24x7: p.is24x7,
-            })),
-            price: bestSell[0].bid,
+            providers: toProviders(bestSell),
+            unitPrice: bestSell[0].bid,
+            unitDelta: runnerUpSell ? bestSell[0].bid - runnerUpSell.price : null,
+            runnerUp: runnerUpSell,
+            deltaVerb: "Cobrás",
+            deltaExtra: " más",
+            deltaAction: "vendiendo",
             type: "sell",
         },
         bestSpread && bestSpread.length > 0 && {
-            providers: bestSpread.map(p => ({
-                prettyName: p.prettyName,
-                logoUrl: p.logoUrl || p.logo || default_img,
-                url: p.url || "#",
-                is24x7: p.is24x7,
-            })),
-            price: bestSpread[0].ask - bestSpread[0].bid,
+            providers: toProviders(bestSpread),
+            unitPrice: bestSpread[0].ask - bestSpread[0].bid,
+            // El spread ya es un costo, no una comparacion entre proveedores:
+            // un "segundo mejor spread" no le dice nada al usuario.
+            unitDelta: null,
+            runnerUp: null,
             type: "spread",
         },
     ].filter(Boolean);
@@ -90,12 +127,56 @@ export default function BestPricesCard() {
                         <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                             {card.type === "buy" ? "Mejor Compra" : card.type === "sell" ? "Mejor Venta" : "Menor Spread"}
                         </h3>
+                        {/* El podio compara solo entre proveedores que operan a toda hora,
+                            asi que la tarjeta lo dice: en la lista de abajo puede haber un
+                            precio mejor de un banco, y sin esta aclaracion no cerraba. */}
+                        {podiumIs24x7 && (
+                            <span
+                                title="El podio compara solo proveedores que operan 24/7. Un banco puede tener un precio mejor, pero solo en horario bancario y siendo cliente."
+                                className="text-[9px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded leading-none uppercase cursor-help"
+                            >
+                                24/7
+                            </span>
+                        )}
                     </div>
 
                     <div className="mb-6 relative z-10">
-                        <span className="text-4xl sm:text-5xl font-extrabold text-[color:var(--text-blue-800)] tracking-tighter">
-                            {currencyFormatter.format(card.price)}
+                        {/* El "$" solo es ambiguo justamente aca: en un sitio de
+                            cotizaciones puede leerse como dolares. El sufijo va al lado
+                            del numero grande, que es donde el ojo cae y donde aparece el
+                            resultado del monto convertido. */}
+                        <span className="flex items-baseline flex-wrap gap-x-1.5">
+                            <span className={`font-extrabold text-[color:var(--text-blue-800)] tracking-tighter tabular-nums ${priceSizeClass(card.unitPrice * amount)}`}>
+                                {currencyFormatter.format(card.unitPrice * amount)}
+                            </span>
+                            <span className="text-sm font-bold text-slate-400 dark:text-slate-500 tracking-wide">
+                                ARS
+                            </span>
                         </span>
+
+                        {showTotals && (
+                            <span className="block mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 tabular-nums">
+                                {currencyFormatter.format(card.unitPrice)} × {amountFormatter.format(amount)} {ticker}
+                            </span>
+                        )}
+
+                        {card.unitDelta > 0 && (
+                            <span className="inline-block mt-3 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 tabular-nums">
+                                {/* Con monto 1 la cifra es por unidad y hay que decirlo; con un
+                                    monto cargado ya es el total y se aclara sobre que cantidad. */}
+                                {showTotals ? (
+                                    <>
+                                        {card.deltaVerb} {currencyFormatter.format(card.unitDelta * amount)}{card.deltaExtra}{" "}
+                                        vs {card.runnerUp.prettyName} ({card.deltaAction} {amountFormatter.format(amount)} {ticker})
+                                    </>
+                                ) : (
+                                    <>
+                                        {card.deltaVerb} {currencyFormatter.format(card.unitDelta)}{card.deltaExtra} por {ticker}{" "}
+                                        vs {card.runnerUp.prettyName} ({currencyFormatter.format(card.runnerUp.price)})
+                                    </>
+                                )}
+                            </span>
+                        )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2 mt-auto pt-4 border-t border-[color:var(--border-color)] relative z-10">

@@ -41,6 +41,18 @@ const InfoCard = () => {
                     </p>
                 </div>
 
+                <div className="bg-[color:var(--card-bg)] p-6 rounded-2xl border border-[color:var(--border-color)] shadow-sm">
+                    <div className="uppercase tracking-widest text-xs text-blue-600 dark:text-blue-400 font-bold mb-3">
+                        ¿Por qué el podio dice 24/7?
+                    </div>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Las tarjetas de mejores precios comparan únicamente proveedores que operan
+                        <strong className="text-[color:var(--text-color)] font-semibold"> a toda hora</strong>.
+                        En la lista completa puede aparecer un banco con un precio mejor, pero solo es
+                        aprovechable en horario bancario y, en general, siendo cliente.
+                    </p>
+                </div>
+
                 <div>
                     <div className="uppercase tracking-widest text-[10px] text-slate-400 dark:text-slate-500 font-bold mb-2">
                         Responsabilidad
