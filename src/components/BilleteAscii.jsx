@@ -4,7 +4,7 @@ import { useTheme } from "@context/ThemeContext";
 
 // El billete vive en /billete-ascii.html (public/) y no como componente: es una
 // escena three.js con su propio loop de render y sus texturas embebidas en
-// base64. En un iframe no compite con React por el frame ni arrastra 360 KB al
+// base64. En un iframe no compite con React por el frame ni arrastra 385 KB al
 // bundle, y la pagina sigue sirviendo suelta para mirarla sin el sitio alrededor.
 const BilleteAscii = ({ className = "h-[44vh] min-h-[280px] sm:h-[60vh] sm:min-h-[420px] max-h-[680px]" }) => {
   const { theme } = useTheme();
@@ -12,7 +12,7 @@ const BilleteAscii = ({ className = "h-[44vh] min-h-[280px] sm:h-[60vh] sm:min-h
   const [loaded, setLoaded] = useState(false);
 
   // El tema viaja por postMessage y no por el src: cambiar el src recargaria los
-  // 360 KB del iframe y reiniciaria la animacion en cada toggle.
+  // 385 KB del iframe y reiniciaria la animacion en cada toggle.
   useEffect(() => {
     if (!loaded) return;
     frameRef.current?.contentWindow?.postMessage(
