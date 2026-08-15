@@ -1,16 +1,23 @@
-import { useTheme } from "@context/ThemeContext";
 import { useState, useEffect } from "react";
 import { fetchPrices } from "@store/pricesSlice";
 import CircleLoading from "@icons/CircleLoading";
 import CircleIsLoading from "@icons/CircleIsLoading";
+import BilleteAscii from "@components/BilleteAscii";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const cooldown_sec = 30;
 
+// Las cuatro cruces de las esquinas: marcas de encuadre, puro detalle grafico.
+const CORNERS = [
+  "left-0 top-0",
+  "right-0 top-0",
+  "left-0 bottom-0",
+  "right-0 bottom-0",
+];
+
 const Hero = () => {
   const dispatch = useDispatch();
-  const { theme } = useTheme();
 
   const { loading, selectedCurrency, lastFetchedAt } = useSelector((state) => state.prices);
 
@@ -49,24 +56,44 @@ const Hero = () => {
   const isButtonDisabled = loading || cooldown > 0;
 
   return (
-    <div className="py-12 md:py-16 text-center relative flex flex-col items-center justify-center space-y-8">
-      <motion.div 
+    <div className="relative flex flex-col items-center justify-center py-8 text-center md:py-12">
+      {CORNERS.map((position) => (
+        <span
+          key={position}
+          aria-hidden="true"
+          className={`pointer-events-none absolute ${position} select-none text-lg font-light leading-none text-[color:var(--text-color)] opacity-25`}
+        >
+          +
+        </span>
+      ))}
+
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-64 w-2/3 rounded-full bg-blue-500/10 blur-[80px] dark:bg-blue-500/20" />
+
+      <motion.h1
         initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center justify-center relative"
+        className="font-display max-w-5xl text-3xl leading-[0.95] text-slate-900 dark:text-white sm:text-5xl md:text-6xl"
       >
-        <div className="absolute inset-0 bg-blue-500/10 dark:bg-blue-500/20 blur-[80px] rounded-full -z-10 transform scale-150 transition-all duration-1000 ease-in-out"></div>
-        <h1 className="text-5xl sm:text-6xl md:text-8xl font-black text-slate-900 dark:text-white tracking-tighter drop-shadow-sm transition-all duration-1000 ease-in-out">
-          USD<span className="text-blue-600 dark:text-blue-500 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-600 transition-all duration-1000 ease-in-out">ZHIN</span>
-        </h1>
-      </motion.div>
+        <span className="text-blue-600 dark:text-blue-500">El mejor precio</span>{" "}
+        no es el que más te conviene.
+      </motion.h1>
 
-      <motion.div 
+      <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex items-center justify-center text-sm font-medium text-[color:var(--text-color)] bg-[color:var(--card-bg)]/60 border border-[color:var(--border-color)]/80 rounded-full px-5 py-2 backdrop-blur-xl shadow-sm transition-shadow dark:shadow-none"
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="mt-5 max-w-2xl text-base text-[color:var(--text-color)] opacity-70 sm:text-lg"
+      >
+        Comparamos 23 proveedores por lo que realmente te queda después de
+        comisiones, no por el número de la pantalla.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.25 }}
+        className="mt-7 flex items-center justify-center rounded-full border border-[color:var(--border-color)]/80 bg-[color:var(--card-bg)]/60 px-5 py-2 text-sm font-medium text-[color:var(--text-color)] shadow-sm backdrop-blur-xl transition-shadow dark:shadow-none"
       >
         <div className="flex items-center space-x-4">
           <span className="flex items-center space-x-2">
@@ -90,6 +117,10 @@ const Hero = () => {
           </button>
         </div>
       </motion.div>
+
+      {/* Mas baja en mobile: ahi el billete lo limita el ancho y una caja alta
+          solo agrega vacio entre el titular y el resto de la pagina. */}
+      <BilleteAscii className="mt-4 h-[26vh] min-h-[170px] w-full max-h-[460px] sm:mt-6 sm:h-[42vh] sm:min-h-[300px]" />
     </div>
   );
 };

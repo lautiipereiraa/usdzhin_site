@@ -48,6 +48,31 @@
   font-style: normal;
 }
 
+/* Tipografia de titulares. Anton es condensada y de un solo peso: gana el
+   contraste de escala con Plus Jakarta Sans, que sigue siendo la del cuerpo.
+   Necesita mas especificidad que el `*` de arriba, que pisa family y weight. */
+.font-display,
+.font-display * {
+  font-family: "Anton", "Plus Jakarta Sans", sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* El topbar flota sobre el contenido: sin esto los anclas del nav dejan la
+   primera linea de cada seccion debajo de la pildora. */
+[id] {
+  scroll-margin-top: 7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);
