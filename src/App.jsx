@@ -6,8 +6,7 @@ import Layout from "@components/Layout";
 import Divisor from "@components/Divisor";
 import InfoCard from "@components/InfoCard";
 import { fetchUSDC } from "@store/usdcSlice";
-import SelectBox from "@components/SelectBox";
-import AmountInput from "@components/AmountInput";
+import Calculator from "@components/Calculator";
 import { fetchDollars } from "@store/dolarSlice";
 import { fetchPrices } from "@store/pricesSlice";
 import DivisorAlert from "@components/DivisorAlert";
@@ -101,14 +100,13 @@ const App = () => {
           </motion.div>
 
           <motion.div
-            key="selectbox"
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+            key="calculadora"
+            className="mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <SelectBox />
-            <AmountInput />
+            <Calculator />
           </motion.div>
 
           <motion.div

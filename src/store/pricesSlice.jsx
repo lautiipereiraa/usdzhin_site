@@ -25,9 +25,6 @@ const pricesSlice = createSlice({
     // que el ganador opera a toda hora.
     podiumIs24x7: false,
     selectedCurrency: { icon: "$", label: "US Dolar (USD)", name: "usd" },
-    // Monto a convertir, en unidades de la divisa seleccionada. 1 = precio unitario,
-    // que es exactamente lo que el sitio mostraba antes de existir este campo.
-    amount: 1,
     // Momento del ultimo fetch exitoso. comparadolar no manda timestamp propio,
     // asi que esto es lo unico honesto que se puede mostrar como "actualizado".
     lastFetchedAt: null,
@@ -47,10 +44,6 @@ const pricesSlice = createSlice({
       state.runnerUpBuy = null;
       state.runnerUpSell = null;
       state.podiumIs24x7 = false;
-    },
-    setAmount: (state, action) => {
-      const parsed = Number(action.payload);
-      state.amount = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     },
   },
   extraReducers: (builder) => {
@@ -150,5 +143,5 @@ const pricesSlice = createSlice({
   },
 });
 
-export const { setSelectedCurrency, setAmount } = pricesSlice.actions;
+export const { setSelectedCurrency } = pricesSlice.actions;
 export default pricesSlice.reducer;

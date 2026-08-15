@@ -13,10 +13,6 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
     maximumFractionDigits: 2,
 });
 
-const amountFormatter = new Intl.NumberFormat("es-AR", {
-    maximumFractionDigits: 4,
-});
-
 // Con montos grandes el total no entra en una tarjeta de un tercio de ancho,
 // asi que la tipografia baja por tramos en vez de desbordar.
 const priceSizeClass = (value) => {
@@ -35,7 +31,6 @@ export default function BestPricesCard() {
         runnerUpBuy,
         runnerUpSell,
         podiumIs24x7,
-        amount,
         selectedCurrency,
         loading,
     } = useSelector((state) => state.prices);
@@ -55,7 +50,6 @@ export default function BestPricesCard() {
     }
 
     const ticker = selectedCurrency.label.match(/\(([^)]+)\)/)?.[1] ?? "";
-    const showTotals = amount !== 1;
 
     const toProviders = (list) => list.map(p => ({
         prettyName: p.prettyName,
@@ -69,12 +63,11 @@ export default function BestPricesCard() {
             providers: toProviders(bestBuy),
             unitPrice: bestBuy[0].ask,
             // Comprar mas barato es un ahorro: lo que se paga de mas en la
-            // siguiente opcion, por unidad o por el monto entero.
+            // siguiente opcion, por unidad.
             unitDelta: runnerUpBuy ? runnerUpBuy.price - bestBuy[0].ask : null,
             runnerUp: runnerUpBuy,
             deltaVerb: "Ahorrás",
             deltaExtra: "",
-            deltaAction: "comprando",
             type: "buy",
         },
         bestSell && bestSell.length > 0 && {
@@ -84,7 +77,6 @@ export default function BestPricesCard() {
             runnerUp: runnerUpSell,
             deltaVerb: "Cobrás",
             deltaExtra: " más",
-            deltaAction: "vendiendo",
             type: "sell",
         },
         bestSpread && bestSpread.length > 0 && {
@@ -143,38 +135,20 @@ export default function BestPricesCard() {
                     <div className="mb-6 relative z-10">
                         {/* El "$" solo es ambiguo justamente aca: en un sitio de
                             cotizaciones puede leerse como dolares. El sufijo va al lado
-                            del numero grande, que es donde el ojo cae y donde aparece el
-                            resultado del monto convertido. */}
+                            del numero grande, que es donde cae el ojo. */}
                         <span className="flex items-baseline flex-wrap gap-x-1.5">
-                            <span className={`font-extrabold text-[color:var(--text-blue-800)] tracking-tighter tabular-nums ${priceSizeClass(card.unitPrice * amount)}`}>
-                                {currencyFormatter.format(card.unitPrice * amount)}
+                            <span className={`font-extrabold text-[color:var(--text-blue-800)] tracking-tighter tabular-nums ${priceSizeClass(card.unitPrice)}`}>
+                                {currencyFormatter.format(card.unitPrice)}
                             </span>
                             <span className="text-sm font-bold text-slate-400 dark:text-slate-500 tracking-wide">
                                 ARS
                             </span>
                         </span>
 
-                        {showTotals && (
-                            <span className="block mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 tabular-nums">
-                                {currencyFormatter.format(card.unitPrice)} × {amountFormatter.format(amount)} {ticker}
-                            </span>
-                        )}
-
                         {card.unitDelta > 0 && (
                             <span className="inline-block mt-3 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 tabular-nums">
-                                {/* Con monto 1 la cifra es por unidad y hay que decirlo; con un
-                                    monto cargado ya es el total y se aclara sobre que cantidad. */}
-                                {showTotals ? (
-                                    <>
-                                        {card.deltaVerb} {currencyFormatter.format(card.unitDelta * amount)}{card.deltaExtra}{" "}
-                                        vs {card.runnerUp.prettyName} ({card.deltaAction} {amountFormatter.format(amount)} {ticker})
-                                    </>
-                                ) : (
-                                    <>
-                                        {card.deltaVerb} {currencyFormatter.format(card.unitDelta)}{card.deltaExtra} por {ticker}{" "}
-                                        vs {card.runnerUp.prettyName} ({currencyFormatter.format(card.runnerUp.price)})
-                                    </>
-                                )}
+                                {card.deltaVerb} {currencyFormatter.format(card.unitDelta)}{card.deltaExtra} por {ticker}{" "}
+                                vs {card.runnerUp.prettyName} ({currencyFormatter.format(card.runnerUp.price)})
                             </span>
                         )}
                     </div>

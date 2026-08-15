@@ -59,18 +59,12 @@
   text-transform: uppercase;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-/* El topbar flota sobre el contenido: sin esto los anclas del nav dejan la
-   primera linea de cada seccion debajo de la pildora. */
+/* Sin scroll-behavior: smooth a proposito. El nav del topbar anima el scroll el
+   mismo, cuadro a cuadro, y las dos animaciones se pelearian. Esto sigue siendo
+   para el caso de entrar directo a /#precios, y su valor tiene que coincidir con
+   el TOP_OFFSET del topbar. */
 [id] {
   scroll-margin-top: 7rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
 }
 
 body {
