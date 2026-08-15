@@ -11,7 +11,7 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
 });
 
 export default function ProvidersList() {
-    const { data, amount } = useSelector((state) => state.prices);
+    const { data } = useSelector((state) => state.prices);
 
     // Igual que en BestPricesCard: el spinner es solo para la carga inicial, no
     // para cada refresco automatico.
@@ -25,8 +25,6 @@ export default function ProvidersList() {
             </div>
         );
     }
-
-    const showTotals = amount !== 1;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -72,12 +70,9 @@ export default function ProvidersList() {
                     <div className="text-right shrink-0 pl-3">
                         <div className="flex flex-col">
                             <span className="text-lg sm:text-xl font-bold text-[color:var(--text-color)] tracking-tighter tabular-nums">
-                                {currencyFormatter.format(provider.ask * amount)}
+                                {currencyFormatter.format(provider.ask)}
                             </span>
                             <div className="flex items-center justify-end gap-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-0.5 uppercase tracking-widest tabular-nums">
-                                {/* El spread se deja siempre por unidad: es una metrica para
-                                    comparar proveedores, no un monto a pagar. */}
-                                {showTotals && <span>{currencyFormatter.format(provider.ask)} c/u ·</span>}
                                 <span>Sp: {provider.ask && provider.bid ? currencyFormatter.format(provider.ask - provider.bid) : 'N/A'}</span>
                                 {provider.pct_variation > 0 ? <ArrowUpIcon className="w-3 h-3 text-rose-500" /> : provider.pct_variation < 0 ? <ArrowDownIcon className="w-3 h-3 text-emerald-500" /> : null}
                             </div>

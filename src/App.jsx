@@ -6,8 +6,7 @@ import Layout from "@components/Layout";
 import Divisor from "@components/Divisor";
 import InfoCard from "@components/InfoCard";
 import { fetchUSDC } from "@store/usdcSlice";
-import SelectBox from "@components/SelectBox";
-import AmountInput from "@components/AmountInput";
+import Calculator from "@components/Calculator";
 import { fetchDollars } from "@store/dolarSlice";
 import { fetchPrices } from "@store/pricesSlice";
 import DivisorAlert from "@components/DivisorAlert";
@@ -101,14 +100,13 @@ const App = () => {
           </motion.div>
 
           <motion.div
-            key="selectbox"
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+            key="calculadora"
+            className="mt-8 mb-10 sm:mt-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <SelectBox />
-            <AmountInput />
+            <Calculator />
           </motion.div>
 
           <motion.div
@@ -121,13 +119,13 @@ const App = () => {
             <section className="mt-6 mb-6">
               <Divisor />
             </section>
-            <span className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mejores precios</span>
+            <span id="precios" className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mejores precios</span>
 
             <div className="mt-6">
               <BestPricesCard />
             </div>
 
-            <section className="mt-8 mb-4">
+            <section id="proveedores" className="mt-8 mb-4">
               <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
                 <span className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Todos los proveedores</span>
                 {/* Las 23 filas no repiten "ARS" una por una: alcanza con decirlo
@@ -151,7 +149,7 @@ const App = () => {
                 <Divisor />
               </section>
               <div className="flex items-center justify-between">
-                <span className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Precio dolares</span>
+                <span id="dolares" className="w-full text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Precio dolares</span>
                 <div className="flex justify-end items-center w-full gap-2">
                   <span className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">(Última actualización: </span>
                   <span className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">{fechaActualizacion || ""})</span>
@@ -179,7 +177,7 @@ const App = () => {
                 <DivisorAlert />
               </section>
 
-              <section className="mt-6">
+              <section id="info" className="mt-6">
                 <InfoCard />
               </section>
 
