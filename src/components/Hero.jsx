@@ -3,10 +3,25 @@ import { fetchPrices } from "@store/pricesSlice";
 import CircleLoading from "@icons/CircleLoading";
 import CircleIsLoading from "@icons/CircleIsLoading";
 import BilleteAscii from "@components/BilleteAscii";
+import Typewriter from "@components/Typewriter";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const cooldown_sec = 30;
+
+// El titular se tipea solo, rotando estas cuatro. Van aca y no adentro del
+// Typewriter para que el copy del sitio se lea donde se usa, no escondido en el
+// motor de la animacion. Anton las renderiza en mayusculas.
+const HERO_PHRASES = [
+  "sin abrir veinte pestañas.",
+  "con las comisiones ya restadas.",
+  "en 23 proveedores, actualizado al minuto.",
+  "comparado en serio.",
+];
+
+// El titulo que leen los buscadores y los lectores de pantalla: la unica de las
+// cuatro que funciona sola, fuera de la secuencia.
+const HERO_LABEL = "El dólar, comparado en serio.";
 
 // Las cuatro cruces de las esquinas: marcas de encuadre, puro detalle grafico.
 const CORNERS = [
@@ -55,8 +70,24 @@ const Hero = () => {
 
   const isButtonDisabled = loading || cooldown > 0;
 
+  // El scroll-margin-top de [id] en index.css ya deja la calculadora debajo del
+  // topbar, asi que aca alcanza con el scrollIntoView nativo.
+  const scrollToCalculator = () => {
+    document.getElementById("calculadora")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <div className="relative flex flex-col items-center justify-center py-8 text-center md:py-12">
+    // Alto de pantalla completa menos el topbar: la portada se lee sola, sin
+    // competir con la calculadora. Se descuenta un poco mas que el pt del
+    // Layout (6/7rem) para que abajo asome el borde de lo que sigue y se note
+    // que hay mas pagina. 100svh y no 100vh: en mobile la barra del navegador
+    // se cuenta, si no la portada queda cortada.
+    <div className="relative flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center py-8 text-center sm:min-h-[calc(100svh-8rem)] md:py-12">
       {CORNERS.map((position) => (
         <span
           key={position}
@@ -75,8 +106,12 @@ const Hero = () => {
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="font-display max-w-5xl text-3xl leading-[0.95] text-slate-900 dark:text-white sm:text-5xl md:text-6xl"
       >
-        <span className="text-blue-600 dark:text-blue-500">El mejor precio</span>{" "}
-        no es el que más te conviene.
+        <Typewriter
+          prefix="El dólar,"
+          phrases={HERO_PHRASES}
+          label={HERO_LABEL}
+          prefixClassName="text-blue-600 dark:text-blue-500"
+        />
       </motion.h1>
 
       <motion.p
@@ -121,6 +156,31 @@ const Hero = () => {
       {/* Mas baja en mobile: ahi el billete lo limita el ancho y una caja alta
           solo agrega vacio entre el titular y el resto de la pagina. */}
       <BilleteAscii className="mt-4 h-[26vh] min-h-[170px] w-full max-h-[460px] sm:mt-6 sm:h-[42vh] sm:min-h-[300px]" />
+
+      {/* La portada ocupa toda la pantalla, asi que hay que decir que abajo sigue
+          algo. Absoluto y no en el flujo: pegado al borde de la portada y sin
+          descentrar el bloque de arriba. */}
+      <button
+        type="button"
+        onClick={scrollToCalculator}
+        aria-label="Ir a la calculadora"
+        className="group absolute bottom-0 left-1/2 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 text-[color:var(--text-color)] opacity-40 transition-opacity hover:opacity-80"
+      >
+        <span className="text-[11px] font-semibold uppercase tracking-widest">Calculá tu monto</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="h-4 w-4 animate-bounce motion-reduce:animate-none"
+        >
+          <path d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
     </div>
   );
 };

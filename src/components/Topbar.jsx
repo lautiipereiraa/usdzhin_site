@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
-import ArrowTelegram from "@icons/ArrowTelegram";
+// import ArrowTelegram from "@icons/ArrowTelegram"; // vuelve con el boton de Telegram
 
 const LINKS = [
   { id: "precios", label: "Precios" },
@@ -177,6 +177,8 @@ const Topbar = () => {
 
         <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
+          {/* Boton de Telegram fuera por ahora: el bot todavia no esta listo y
+              apuntaba al repo, no a un bot usable.
           <motion.a
             href="https://github.com/lautiipereiraa/usdzhinbot"
             target="_blank"
@@ -189,6 +191,7 @@ const Topbar = () => {
             <ArrowTelegram />
             <span className="hidden sm:inline">Telegram</span>
           </motion.a>
+          */}
         </div>
       </nav>
     </motion.header>

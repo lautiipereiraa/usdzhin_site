@@ -59,6 +59,45 @@
   text-transform: uppercase;
 }
 
+/* Cursor del titular tipeado. El parpadeo va por CSS y no por un timer de JS:
+   asi no dispara un render de React por cada encendido y apagado. La caja vacia
+   la monta tambien la capa fantasma del Typewriter, para que el ancho del
+   cursor entre en la altura que esa capa reserva. */
+.type-caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 0.75em;
+  margin-left: 0.06em;
+  vertical-align: baseline;
+}
+
+.type-caret--on {
+  background-color: currentColor;
+  animation: type-caret-blink 1s steps(1, end) infinite;
+}
+
+/* steps(1, end) y no un fade: un cursor de terminal prende y apaga, no respira. */
+@keyframes type-caret-blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Con reduced motion el componente ya renderiza la frase fija, pero el cursor
+   es CSS y no sabe nada de eso: sin esto seguiria parpadeando solo. */
+@media (prefers-reduced-motion: reduce) {
+  .type-caret--on {
+    animation: none;
+  }
+}
+
 /* Sin scroll-behavior: smooth a proposito. El nav del topbar anima el scroll el
    mismo, cuadro a cuadro, y las dos animaciones se pelearian. Esto sigue siendo
    para el caso de entrar directo a /#precios, y su valor tiene que coincidir con

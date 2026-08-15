@@ -101,7 +101,7 @@ const App = () => {
 
           <motion.div
             key="calculadora"
-            className="mb-10"
+            className="mt-8 mb-10 sm:mt-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
