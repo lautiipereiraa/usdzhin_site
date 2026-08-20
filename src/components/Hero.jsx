@@ -15,7 +15,7 @@ const cooldown_sec = 30;
 const HERO_PHRASES = [
   "sin abrir veinte pestañas.",
   "con las comisiones ya restadas.",
-  "en 23 proveedores, actualizado al minuto.",
+  "en todos los proveedores, actualizado al minuto.",
   "comparado en serio.",
 ];
 
@@ -120,7 +120,7 @@ const Hero = () => {
         transition={{ duration: 0.5, delay: 0.15 }}
         className="mt-5 max-w-2xl text-base text-[color:var(--text-color)] opacity-70 sm:text-lg"
       >
-        Comparamos 23 proveedores por lo que realmente te queda después de
+        Comparamos todos los proveedores por lo que realmente te queda después de
         comisiones, no por el número de la pantalla.
       </motion.p>
 

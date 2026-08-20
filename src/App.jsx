@@ -128,7 +128,7 @@ const App = () => {
             <section id="proveedores" className="mt-8 mb-4">
               <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
                 <span className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Todos los proveedores</span>
-                {/* Las 23 filas no repiten "ARS" una por una: alcanza con decirlo
+                {/* Las filas no repiten "ARS" una por una: alcanza con decirlo
                     una vez arriba de la lista que describe. */}
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                   Valores en ARS
